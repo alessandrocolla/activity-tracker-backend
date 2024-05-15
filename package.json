@@ -4,12 +4,17 @@
   "description": "backend for the activity tracker app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:dev": "nodemon server.js",
+    "start:prod": "NODE_ENV=production nodemon server.js"
   },
   "author": "backend group",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "mongodb": "^6.6.1",
+    "mongoose": "^8.3.5",
+    "morgan": "^1.10.0",
     "node": "^20.13.1"
   },
   "devDependencies": {
