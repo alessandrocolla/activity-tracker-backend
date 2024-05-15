@@ -5,34 +5,34 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const activitySchema = new mongoose.Schema({
   taskName: {
     type: String,
-    required: [true, "A task must have a name"],
+    required: [true, "An activity must have a task name"],
     trim: true,
   },
   taskID: {
     type: ObjectId,
-    required: [true, "A task must have an ID"],
+    required: [true, "An activity must have an task ID"],
   },
   activityDate: {
     type: Date,
-    required: [true, "A task must have an activity date"],
+    required: [true, "An activity must have an activity date"],
   },
   startTime: {
     type: String,
-    required: [true, "A task must have a start time"],
+    required: [true, "An activity must have a start time"],
   },
   endTime: {
     type: String,
-    required: [true, "A task must have a end time"],
+    required: [true, "An activity must have a end time"],
   },
   notes: {
     type: String,
-    required: [true, "A task must have some notes"],
+    required: [true, "An activity must have some notes"],
     trim: true,
     maxlength: [100, "Notes must have less or equal than 100 characters"],
   },
   userID: {
     type: ObjectId,
-    required: [true, "Task must have an user ID"],
+    required: [true, "An activity must have an user ID"],
   },
 });
 
