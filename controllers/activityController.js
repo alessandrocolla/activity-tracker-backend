@@ -16,3 +16,19 @@ exports.getActivities = async (req, res) => {
     });
   }
 };
+
+exports.getActivity = async (req, res) => {
+  try {
+    const activity = await Activity.findById(req.params.id);
+
+    res.status(200).json({
+      status: "success",
+      data: activity,
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "fail",
+      message: err,
+    });
+  }
+};
