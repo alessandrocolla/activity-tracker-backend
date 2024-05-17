@@ -4,7 +4,7 @@
   "description": "backend for the activity tracker app",
   "main": "index.js",
   "scripts": {
-    "start:dev": "nodemon server.js",
+    "start": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js"
   },
   "author": "backend group",
