@@ -4,6 +4,10 @@ const activityController = require("../controllers/activityController");
 const router = express.Router();
 
 router.route("/").get(activityController.getActivities).post(activityController.createActivity);
-router.route("/:id").get(activityController.getActivity).patch(activityController.updateActivity);
+router
+  .route("/:id")
+  .get(activityController.getActivity)
+  .patch(activityController.updateActivity)
+  .delete(activityController.deleteActivity);
 
 module.exports = router;
