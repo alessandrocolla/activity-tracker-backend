@@ -6,6 +6,8 @@ const taskRouter = require("./routes/taskRoutes");
 
 const app = express();
 
+const taskRouter = require("./routes/taskRoutes");
+
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
