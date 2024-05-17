@@ -60,7 +60,10 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
-  creationDate: Date,
+  creationDate: {
+    type: Date,
+    default: Date.now(),
+  },
 });
 
 userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
