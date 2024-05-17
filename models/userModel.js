@@ -49,6 +49,7 @@ const userSchema = new mongoose.Schema({
   codiceFiscale: {
     type: String,
     required: [true, "You must put a codiceFiscale (taxCode)"],
+    unique: true,
     minlength: 16,
     maxlength: 16,
   },
