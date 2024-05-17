@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { __esModule } = require("validator/lib/isAlpha");
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
