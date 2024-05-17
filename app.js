@@ -3,6 +3,7 @@ const morgan = require("morgan");
 
 const userRouter = require("./routes/userRoutes");
 const taskRouter = require("./routes/taskRoutes");
+const activityRouter = require("./routes/activityRoutes");
 
 const app = express();
 
@@ -18,5 +19,6 @@ app.use(express.json({ limit: "10kb" }));
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/tasks", taskRouter);
+app.use("/api/v1/activities", activityRouter);
 
 module.exports = app;
