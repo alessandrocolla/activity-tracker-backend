@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema({
   firstName: {
@@ -14,12 +15,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "You must put an email"],
     unique: true,
-    validate: [validator.isEmail, "Please provide a valide email"],
+    validate: [validator.isEmail, "Please provide a valid email"],
   },
   password: {
     type: String,
     required: [true, "You must put a password"],
     minlength: 8,
+    select: false,
   },
   confirmPassword: {
     type: String,
@@ -59,6 +61,10 @@ const userSchema = new mongoose.Schema({
   },
   creationDate: Date,
 });
+
+userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
 
 const User = mongoose.model("User", userSchema);
 
