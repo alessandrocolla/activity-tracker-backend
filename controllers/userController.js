@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const Activity = require("../models/activityModel");
 
 exports.getUsers = async (req, res) => {
   try {
@@ -44,6 +45,35 @@ exports.createUser = async (req, res, next) => {
     res.status(400).json({
       status: "fail",
       message: err,
+    });
+  }
+};
+
+exports.getUserActivities = async (req, res, next) => {
+  try {
+    const userID = req.params.id;
+
+    const user = await User.findById(userID);
+    if (!user) {
+      return res.status(404).json({
+        status: "fail",
+        message: "User not found",
+      });
+    }
+
+    const userActivities = await Activity.find({ userID: userID });
+
+    res.status(200).json({
+      status: "success",
+      results: userActivities.length,
+      data: {
+        userActivities,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "fail",
+      message: err.message,
     });
   }
 };
