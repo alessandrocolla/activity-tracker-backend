@@ -49,6 +49,33 @@ exports.createUser = async (req, res, next) => {
   }
 };
 
+exports.getUser = async (req, res, next) => {
+  try {
+    const userID = req.params.id;
+
+    const user = await User.findOne({ _id: userID });
+
+    if (!user) {
+      return res.status(404).json({
+        status: "fail",
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        user,
+      },
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};
+
 exports.getUserActivities = async (req, res, next) => {
   try {
     const userID = req.params.id;
