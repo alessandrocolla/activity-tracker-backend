@@ -12,9 +12,7 @@ exports.login = async (req, res, next) => {
     }
 
     const user = await User.findOne({ email }).select("+password");
-    // TODO : after the password are saved as hash
-    // if (!user || !(await correctPassword(password, user.password))) {
-    if (!user || !(password === user.password)) {
+    if (!user || !(await user.correctPassword(password, user.password))) {
       return res.status(401).json({
         status: "fail",
         message: "Incorrect email or password",
@@ -28,7 +26,7 @@ exports.login = async (req, res, next) => {
       message: "User logged in",
     });
   } catch (err) {
-    res.status(400).json({
+    res.status(500).json({
       status: "fail",
       message: err,
     });
