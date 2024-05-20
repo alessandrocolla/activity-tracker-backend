@@ -31,6 +31,31 @@ const createSendToken = (user, statusCode, res) => {
   });
 };
 
+exports.signup = async (req, res, next) => {
+  try {
+    const newUser = await User.create({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      password: req.body.password,
+      passwordConfirm: req.body.passwordConfirm,
+      codiceFiscale: req.body.codiceFiscale,
+    });
+
+    res.status(201).json({
+      status: "success",
+      data: {
+        user: newUser,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "fail",
+      message: err,
+    });
+  }
+};
+
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
