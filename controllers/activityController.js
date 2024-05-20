@@ -1,94 +1,69 @@
 const Activity = require("../models/activityModel");
+const AppError = require("../utils/appError");
 
-exports.getActivities = async (req, res) => {
-  try {
-    const activities = await Activity.find();
+exports.getActivities = catchAsync(async (req, res, next) => {
+  const activities = await Activity.find();
 
-    res.status(200).json({
-      status: "success",
-      results: activities.length,
-      data: activities,
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
-  }
-};
+  res.status(200).json({
+    status: "success",
+    results: activities.length,
+    data: activities,
+  });
+});
 
-exports.getActivity = async (req, res) => {
-  try {
-    const activity = await Activity.findById(req.params.id);
+exports.getActivity = catchAsync(async (req, res, next) => {
+  const activity = await Activity.findById(req.params.id);
 
-    res.status(200).json({
-      status: "success",
-      data: activity,
-    });
-  } catch (err) {
-    res.status(404).json({ status: "fail", message: err });
-  }
-};
+  if (!activity) return next(new AppError("Activity not found.", 404));
 
-exports.createActivity = async (req, res) => {
-  try {
-    const newActivity = await Activity.create({
-      taskName: req.body.taskName,
-      taskID: req.body.taskID,
-      activityDate: req.body.activityDate,
-      startTime: req.body.startTime,
-      endTime: req.body.endTime,
-      notes: req.body.notes,
-      userID: req.body.userID,
-    });
+  res.status(200).json({
+    status: "success",
+    data: activity,
+  });
+});
 
-    res.status(201).json({
-      status: "success",
-      data: {
-        activity: newActivity,
-      },
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "fail",
-      message: err,
-    });
-  }
-};
+exports.createActivity = catchAsync(async (req, res, next) => {
+  const newActivity = await Activity.create({
+    taskName: req.body.taskName,
+    taskID: req.body.taskID,
+    activityDate: req.body.activityDate,
+    startTime: req.body.startTime,
+    endTime: req.body.endTime,
+    notes: req.body.notes,
+    userID: req.body.userID,
+  });
 
-exports.updateActivity = async (req, res) => {
-  try {
-    const activity = await Activity.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+  res.status(201).json({
+    status: "success",
+    data: {
+      activity: newActivity,
+    },
+  });
+});
 
-    res.status(200).json({
-      status: "success",
-      data: {
-        activity: activity,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
-  }
-};
+exports.updateActivity = catchAsync(async (req, res, next) => {
+  const activity = await Activity.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
 
-exports.deleteActivity = async (req, res) => {
-  try {
-    await Activity.findByIdAndDelete(req.params.id);
+  if (!activity) return next(new AppError("Activity not found.", 404));
 
-    res.status(204).json({
-      status: "success",
-      data: null,
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
-  }
-};
+  res.status(200).json({
+    status: "success",
+    data: {
+      activity: activity,
+    },
+  });
+});
+
+exports.deleteActivity = catchAsync(async (req, res, next) => {
+  await Activity.findByIdAndDelete(req.params.id);
+
+  if (!activity) return next(new AppError("Activity not found.", 404));
+
+  res.status(204).json({
+    status: "success",
+    data: null,
+  });
+});
