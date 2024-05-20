@@ -1,13 +1,17 @@
 const express = require("express");
 const activityController = require("../controllers/activityController");
+const authController = require("../controllers/authController");
 
 const router = express.Router();
 
-router.route("/").get(activityController.getActivities).post(activityController.createActivity);
+router
+  .route("/")
+  .get(authController.protectRoute, activityController.getActivities)
+  .post(authController.protectRoute, activityController.createActivity);
 router
   .route("/:id")
-  .get(activityController.getActivity)
-  .patch(activityController.updateActivity)
-  .delete(activityController.deleteActivity);
+  .get(authController.protectRoute, activityController.getActivity)
+  .patch(authController.protectRoute, activityController.updateActivity)
+  .delete(authController.protectRoute, activityController.deleteActivity);
 
 module.exports = router;
