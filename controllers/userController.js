@@ -2,6 +2,7 @@ const User = require("../models/userModel");
 const Activity = require("../models/activityModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
+const emailConstructor = require("../utils/emailConstructor");
 const { getAll, getOne, updateOne, deleteOne } = require("./handlerFactory");
 
 exports.getUsers = getAll(User);
@@ -14,15 +15,8 @@ exports.createUser = catchAsync(async (req, res, next) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
-    password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm,
-    role: req.body.role,
-    passwordChangedAt: req.body.passwordChangedAt,
     propic: req.body.propic,
     codiceFiscale: req.body.codiceFiscale,
-    isAccepted: req.body.isAccepted,
-    isActive: req.body.isActive,
-    creationDate: req.body.creationDate,
   });
 
   res.status(201).json({
@@ -66,6 +60,34 @@ exports.updateUserActivities = catchAsync(async (req, res, next) => {
     status: "success",
     data: {
       updatedUserActivity,
+    },
+  });
+});
+
+exports.changeStatus = catchAsync(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(
+    req.params.id,
+    {
+      isAccepted: req.body.isAccepted,
+      isActive: req.body.isActive,
+    },
+    {
+      new: true,
+      runValidators: false,
+    },
+  );
+
+  if (!user) return next(new AppError("User not found.", 404));
+
+  if (req.body.isAccepted === true) {
+    const messageOption = "Welcome aboard! Submit a PATCH request with your new password and passwordConfirm to: ";
+    await emailConstructor(user.email, messageOption, req, res, next);
+  }
+
+  res.status(201).json({
+    status: "success",
+    data: {
+      user,
     },
   });
 });

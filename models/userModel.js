@@ -21,13 +21,11 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, "You must put a password"],
     minlength: 8,
     select: false,
   },
   passwordConfirm: {
     type: String,
-    required: [true, "You must confirm your password"],
     validate: {
       validator: function (el) {
         return el === this.password;
@@ -68,20 +66,27 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
-
-  this.password = await bcrypt.hash(this.password, 12);
-
-  this.passwordConfirm = undefined;
-
+userSchema.pre("validate", function (next) {
+  if ((this.isNew && !this.password) || !this.passwordConfirm) {
+    this.password = "aB3@E6FgH9Jk";
+    this.passwordConfirm = "aB3@E6FgH9Jk";
+  }
   next();
 });
 
-userSchema.pre("save", function (next) {
-  if (!this.isModified("password") || this.isNew) return next();
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
 
+  if (this.isNew) {
+    this.password = undefined;
+    this.passwordConfirm = undefined;
+    return next();
+  }
+
+  this.password = await bcrypt.hash(this.password, 12);
+  this.passwordConfirm = undefined;
   this.passwordChangedAt = Date.now() - 1000;
+
   next();
 });
 
