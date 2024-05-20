@@ -2,31 +2,12 @@ const User = require("../models/userModel");
 const Activity = require("../models/activityModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
+const { getAll, getOne, updateOne, deleteOne } = require("./handlerFactory");
 
-exports.getUsers = catchAsync(async (req, res, next) => {
-  const users = await User.find();
-
-  res.status(200).json({
-    status: "success",
-    results: users.length,
-    data: users,
-  });
-});
-
-exports.getUser = catchAsync(async (req, res, next) => {
-  const userID = req.params.id;
-
-  const user = await User.findOne({ _id: userID });
-
-  if (!user) return next(new AppError("User not found.", 404));
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      user,
-    },
-  });
-});
+exports.getUsers = getAll(User);
+exports.getUser = getOne(User);
+exports.updateUser = updateOne(User);
+exports.deleteUser = deleteOne(User);
 
 exports.createUser = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
@@ -49,31 +30,6 @@ exports.createUser = catchAsync(async (req, res, next) => {
     data: {
       user: newUser,
     },
-  });
-});
-
-exports.updateUser = catchAsync(async (req, res, next) => {
-  const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-
-  if (!user) return next(new AppError("User not found.", 404));
-
-  res.status(200).json({
-    status: "success",
-    data: user,
-  });
-});
-
-exports.deleteUser = catchAsync(async (req, res, next) => {
-  const user = await User.findByIdAndDelete(req.params.id);
-
-  if (!user) return next(new AppError("User not found.", 404));
-
-  res.status(204).json({
-    status: "success",
-    data: null,
   });
 });
 
