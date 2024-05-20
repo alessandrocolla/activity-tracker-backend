@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const AppError = require("../utils/appError");
@@ -87,6 +88,27 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
     return next(new AppError("There was an error sending the email, please try again later.", 500));
   }
+});
+
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  const hashedToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
+
+  const user = await User.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetExpires: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return next(new AppError("Token is invalid or expired", 400));
+  }
+
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+  await user.save();
+
+  createSendToken(user, 200, res);
 });
 
 exports.login = async (req, res, next) => {
