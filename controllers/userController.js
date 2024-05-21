@@ -49,3 +49,23 @@ exports.getUserActivities = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.updateUserActivities = catchAsync(async (req, res, next) => {
+  const { userID, activityID } = req.params;
+
+  const user = await User.findById(userID);
+  if (!user) return next(new AppError("User not found.", 404));
+
+  const updatedUserActivity = await Activity.findOneAndUpdate({ _id: activityID, userID: userID }, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  if (!updatedUserActivity) return next(new AppError("User activity not found.", 404));
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      updatedUserActivity,
+    },
+  });
+});
