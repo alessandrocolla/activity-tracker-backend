@@ -19,6 +19,9 @@ router
   .patch(authController.protectRoute, userController.updateUser)
   .delete(authController.protectRoute, userController.deleteUser);
 router.route("/:id/activities").get(authController.protectRoute, userController.getUserActivities);
+router
+  .route("/:userID/activities/:activityID")
+  .patch(authController.protectRoute, authController.restrictTo("admin"), userController.updateUserActivities);
 
 router.patch("/updateMyPassword", authController.protectRoute, authController.updatePassword);
 
