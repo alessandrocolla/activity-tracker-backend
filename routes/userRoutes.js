@@ -1,6 +1,8 @@
 const express = require("express");
 const userController = require("../controllers/userController");
 const authController = require("../controllers/authController");
+const { restrictToOwnerOrAdmin } = require("../controllers/authController");
+const User = require("../models/userModel");
 
 const router = express.Router();
 
@@ -17,13 +19,13 @@ router.patch(
 
 router
   .route("/")
-  .get(authController.protectRoute, userController.getUsers)
+  .get(authController.protectRoute, authController.restrictTo("admin"), userController.getUsers)
   .post(authController.protectRoute, userController.createUser);
 router
   .route("/:id")
-  .get(authController.protectRoute, userController.getUser)
-  .patch(authController.protectRoute, userController.updateUser)
-  .delete(authController.protectRoute, userController.deleteUser);
+  .get(authController.protectRoute, restrictToOwnerOrAdmin(User), userController.getUser)
+  .patch(authController.protectRoute, restrictToOwnerOrAdmin(User), userController.updateUser)
+  .delete(authController.protectRoute, restrictToOwnerOrAdmin(User), userController.deleteUser);
 router.route("/:id/activities").get(authController.protectRoute, userController.getUserActivities);
 router
   .route("/:userID/activities/:activityID")

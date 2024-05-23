@@ -176,3 +176,18 @@ exports.loginAuth = catchAsync(async (req, res, next) => {
 
   next();
 });
+
+exports.restrictToOwnerOrAdmin = (Model) =>
+  catchAsync(async (req, res, next) => {
+    const document = await Model.findById(req.params.id);
+
+    if (!document) {
+      return next(new AppError("No document found with that ID", 404));
+    }
+
+    if (document.userID.toString() !== req.user.id && req.user.role !== "admin") {
+      return next(new AppError("You do not have permission to perform this action", 403));
+    }
+
+    next();
+  });
