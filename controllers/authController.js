@@ -62,14 +62,9 @@ exports.signup = async (req, res, next) => {
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   const messageOption = "Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ";
-  const emailSent = await emailConstructor(req.body.email, messageOption, req, res, next);
-
-  if (emailSent) {
-    res.status(200).json({
-      status: "success",
-      message: "Token sent to mail successfully.",
-    });
-  }
+  const subjectOption = "Your password reset token (valid for 10 minutes).";
+  const emailConstructorInstance = emailConstructor(req.body.email, messageOption, subjectOption);
+  await emailConstructorInstance(req, res, next);
 });
 
 exports.resetPassword = catchAsync(async (req, res, next) => {
