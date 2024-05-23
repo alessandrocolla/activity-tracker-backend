@@ -11,7 +11,7 @@ const sendEmail = async (options) => {
   });
 
   const mailOptions = {
-    from: "Activity Tracker activitytracker@support.it",
+    from: "Activity Tracker <activitytracker@support.it>",
     to: options.email,
     subject: options.subject,
     text: options.text,

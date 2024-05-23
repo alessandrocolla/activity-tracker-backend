@@ -80,14 +80,10 @@ exports.changeStatus = catchAsync(async (req, res, next) => {
   if (!user) return next(new AppError("User not found.", 404));
 
   if (req.body.isAccepted === true) {
-    const messageOption = "Welcome aboard! Submit a PATCH request with your new password and passwordConfirm to: ";
-    await emailConstructor(user.email, messageOption, req, res, next);
+    const messageOption =
+      "Welcome aboard! Your confirm account token (valid for 7 days). In case you didn't confirm your password in time, you can request a reset password. Submit a PATCH request with your new password and passwordConfirm to: ";
+    const subjectOption = "Your confirm account token (valid for 7 days).";
+    const emailConstructorInstance = emailConstructor(user.email, messageOption, subjectOption);
+    await emailConstructorInstance(req, res, next);
   }
-
-  res.status(201).json({
-    status: "success",
-    data: {
-      user,
-    },
-  });
 });
