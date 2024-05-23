@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     required: [true, "You must put a firstName"],
     validate: {
       validator: function (el) {
-        return firstLastNameRegex.el;
+        return firstLastNameRegex.test(el);
       },
       message: (props) => `${props.value} is not a valid first name!`,
     },
@@ -25,9 +25,9 @@ const userSchema = new mongoose.Schema({
     required: [true, "You must put a lastName"],
     validate: {
       validator: function (el) {
-        return firstLastNameRegex.el;
+        return firstLastNameRegex.test(el);
       },
-      message: (props) => `${props.value} is not a valid first name! Do not use spaces `,
+      message: (props) => `${props.value} is not a valid first name!`,
     },
   },
   email: {
@@ -43,8 +43,7 @@ const userSchema = new mongoose.Schema({
     select: false,
     validate: [
       validator.isStrongPassword,
-      "Password must be at least 8 characters long and must contain:\
-       at least one lowercase character, at least one uppercase character, at least one number and at least one symbol",
+      "Password must be at least 8 characters long and must contain: at least one lowercase character, at least one uppercase character, at least one number and at least one symbol",
     ],
   },
   passwordConfirm: {
@@ -74,6 +73,12 @@ const userSchema = new mongoose.Schema({
     unique: true,
     minlength: 16,
     maxlength: 16,
+    validate: {
+      validator: function (el) {
+        return codiceFiscaleRegex.test(el);
+      },
+      message: (props) => `${props.value} is not a valid codiceFiscale (tax code)!`,
+    },
   },
   isAccepted: {
     type: Boolean,
@@ -88,6 +93,8 @@ const userSchema = new mongoose.Schema({
     default: Date.now(),
   },
 });
+
+userSchema.index({ codiceFiscale: 1 }, { unique: true });
 
 userSchema.pre("validate", function (next) {
   if ((this.isNew && !this.password) || !this.passwordConfirm) {
