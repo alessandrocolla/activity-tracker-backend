@@ -34,6 +34,10 @@ const activitySchema = new mongoose.Schema({
     type: ObjectId,
     required: [true, "An activity must have an user ID"],
   },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const Activity = mongoose.model("Activity", activitySchema);
