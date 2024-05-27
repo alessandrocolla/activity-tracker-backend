@@ -11,29 +11,23 @@ router.post("/login", authController.loginAuth, authController.login);
 router.get("/logout", authController.logout);
 router.post("/forgotPassword", authController.loginAuth, authController.forgotPassword);
 router.patch("/resetPassword/:token", authController.loginAuth, authController.resetPassword);
-router.patch(
-  "/changeStatus/:id",
-  authController.protectRoute,
-  authController.restrictTo("admin"),
-  userController.changeStatus,
-);
 
-router
-  .route("/")
-  .get(authController.protectRoute, authController.restrictTo("admin"), userController.getUsers)
-  .post(authController.protectRoute, userController.createUser);
-router
-  .route("/:id")
-  .get(authController.protectRoute, restrictToOwnerOrAdmin(User), userController.getUser)
-  .patch(authController.protectRoute, restrictToOwnerOrAdmin(User), userController.updateUser)
-  .delete(authController.protectRoute, restrictToOwnerOrAdmin(User), userController.deleteUser);
-router
-  .route("/:id/activities")
-  .get(authController.protectRoute, restrictToOwnerOrAdmin(User), userController.getUserActivities);
+router.use(authController.protectRoute);
+
+router.patch("/updateMyPassword", authController.updatePassword);
+
+router.patch("/changeStatus/:id", authController.restrictTo("admin"), userController.changeStatus);
+
+router.route("/").get(authController.restrictTo("admin"), userController.getUsers).post(userController.createUser);
+
+router.route("/:id/activities").get(authController.restrictTo("admin"), userController.getUserActivities);
+
 router
   .route("/:userID/activities/:activityID")
-  .patch(authController.protectRoute, authController.restrictTo("admin"), userController.updateUserActivities);
+  .patch(authController.restrictTo("admin"), userController.updateUserActivities);
 
-router.patch("/updateMyPassword", authController.protectRoute, authController.updatePassword);
+router.use(restrictToOwnerOrAdmin(User));
+
+router.route("/:id").get(userController.getUser).patch(userController.updateUser).delete(userController.deleteUser);
 
 module.exports = router;

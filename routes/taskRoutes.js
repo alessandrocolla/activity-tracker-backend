@@ -4,14 +4,14 @@ const authController = require("../controllers/authController");
 
 const router = express.Router();
 
-router
-  .route("/")
-  .get(authController.protectRoute, taskController.getTasks)
-  .post(authController.protectRoute, authController.restrictTo("admin"), taskController.createTask);
+router.use(authController.protectRoute);
+
+router.route("/").get(taskController.getTasks).post(authController.restrictTo("admin"), taskController.createTask);
+
 router
   .route("/:id")
-  .get(authController.protectRoute, taskController.getTask)
-  .delete(authController.protectRoute, authController.restrictTo("admin"), taskController.deleteTask)
-  .patch(authController.protectRoute, authController.restrictTo("admin"), taskController.updateTask);
+  .get(taskController.getTask)
+  .delete(authController.restrictTo("admin"), taskController.deleteTask)
+  .patch(authController.restrictTo("admin"), taskController.updateTask);
 
 module.exports = router;

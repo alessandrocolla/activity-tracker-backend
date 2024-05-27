@@ -6,17 +6,21 @@ const Activity = require("../models/activityModel");
 
 const router = express.Router();
 
+router.use(authController.protectRoute);
+
 router
   .route("/")
-  .get(authController.protectRoute, authController.restrictTo("admin"), activityController.getActivities)
-  .post(authController.protectRoute, activityController.createActivity);
+  .get(authController.restrictTo("admin"), activityController.getActivities)
+  .post(activityController.createActivity);
 
-router.get("/me", authController.protectRoute, activityController.personalActivities);
+router.get("/me", activityController.personalActivities);
+
+router.use(restrictToOwnerOrAdmin(Activity));
 
 router
   .route("/:id")
-  .get(authController.protectRoute, restrictToOwnerOrAdmin(Activity), activityController.getActivity)
-  .patch(authController.protectRoute, restrictToOwnerOrAdmin(Activity), activityController.updateActivity)
-  .delete(authController.protectRoute, restrictToOwnerOrAdmin(Activity), activityController.deleteActivity);
+  .get(activityController.getActivity)
+  .patch(activityController.updateActivity)
+  .delete(activityController.deleteActivity);
 
 module.exports = router;
