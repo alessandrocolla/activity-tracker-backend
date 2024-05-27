@@ -2,6 +2,7 @@ const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const APIFeatures = require("../utils/apiFeatures");
 const Activity = require("../models/activityModel");
+const User = require("../models/userModel");
 
 exports.getAll = (Model) =>
   catchAsync(async (req, res, next) => {
@@ -45,12 +46,24 @@ exports.updateOne = (Model) =>
 
     if (!document) return next(new AppError("Document not found.", 404));
 
-    res.status(200).json({
-      status: "success",
-      data: {
-        document,
-      },
-    });
+    if (document.role === "user") {
+      res.status(200).json({
+        status: "success",
+        data: {
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          propic: req.body.propic,
+          codiceFiscale: req.body.codiceFiscale,
+        },
+      });
+    } else {
+      res.status(200).json({
+        status: "success",
+        data: {
+          document,
+        },
+      });
+    }
   });
 
 exports.deleteOne = (Model) =>

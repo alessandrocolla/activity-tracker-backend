@@ -3,6 +3,7 @@ const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/userModel");
+const Activity = require("../models/activityModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const emailConstructor = require("../utils/emailConstructor");
@@ -185,7 +186,11 @@ exports.restrictToOwnerOrAdmin = (Model) =>
       return next(new AppError("No document found with that ID", 404));
     }
 
-    if (document.userID.toString() !== req.user.id && req.user.role !== "admin") {
+    if (
+      req.user.role !== "admin" &&
+      ((Model === User && document._id.toString() !== req.user.id) ||
+        (Model === Activity && document.userID.toString() !== req.user.id))
+    ) {
       return next(new AppError("You do not have permission to perform this action", 403));
     }
 

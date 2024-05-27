@@ -26,7 +26,9 @@ router
   .get(authController.protectRoute, restrictToOwnerOrAdmin(User), userController.getUser)
   .patch(authController.protectRoute, restrictToOwnerOrAdmin(User), userController.updateUser)
   .delete(authController.protectRoute, restrictToOwnerOrAdmin(User), userController.deleteUser);
-router.route("/:id/activities").get(authController.protectRoute, userController.getUserActivities);
+router
+  .route("/:id/activities")
+  .get(authController.protectRoute, restrictToOwnerOrAdmin(User), userController.getUserActivities);
 router
   .route("/:userID/activities/:activityID")
   .patch(authController.protectRoute, authController.restrictTo("admin"), userController.updateUserActivities);
