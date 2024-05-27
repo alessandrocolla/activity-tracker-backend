@@ -5,6 +5,15 @@ const AppError = require("../utils/appError");
 const emailConstructor = require("../utils/emailConstructor");
 const { getAll, getOne, updateOne, deleteOne } = require("./handlerFactory");
 
+const filterObj = (obj, ...allowedFields) => {
+  const newObj = {};
+  Object.keys(obj).forEach((el) => {
+    if (allowedFields.includes(el)) newObj[el] = obj[el];
+  });
+
+  return newObj;
+};
+
 exports.getUsers = getAll(User);
 exports.getUser = getOne(User);
 exports.updateUser = updateOne(User);
@@ -97,4 +106,27 @@ exports.changeStatus = catchAsync(async (req, res, next) => {
       },
     });
   }
+});
+
+exports.updateMe = catchAsync(async (req, res, next) => {
+  if (req.body.password || req.body.passwordConfirm)
+    return next(new AppError("This route is not for password updates. Please use /updateMyPassword", 400));
+
+  let filteredBody;
+
+  if (req.user.role === "user") {
+    filteredBody = filterObj(req.body, "firstName", "lastName", "codiceFiscale");
+  } else if (req.user.role === "admin") {
+    filteredBody = req.body;
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, { new: true, runValidators: true });
+
+  res.status(200).json({
+    status: "success",
+    message: "Data updated successfully.",
+    data: {
+      updatedUser,
+    },
+  });
 });
