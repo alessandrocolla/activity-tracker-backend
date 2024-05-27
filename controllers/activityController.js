@@ -26,3 +26,17 @@ exports.createActivity = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.personalActivities = catchAsync(async (req, res, next) => {
+  const userID = req.user.id;
+
+  const userActivities = await Activity.find({ userID: userID });
+
+  res.status(200).json({
+    status: "success",
+    results: userActivities.length,
+    data: {
+      userActivities,
+    },
+  });
+});

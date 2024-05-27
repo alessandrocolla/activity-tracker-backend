@@ -10,6 +10,9 @@ router
   .route("/")
   .get(authController.protectRoute, authController.restrictTo("admin"), activityController.getActivities)
   .post(authController.protectRoute, activityController.createActivity);
+
+router.get("/me", authController.protectRoute, activityController.personalActivities);
+
 router
   .route("/:id")
   .get(authController.protectRoute, restrictToOwnerOrAdmin(Activity), activityController.getActivity)
