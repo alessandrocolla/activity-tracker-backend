@@ -1,3 +1,6 @@
+const multer = require("multer");
+const sharp = require("sharp");
+const fs = require("fs");
 const User = require("../models/userModel");
 const Activity = require("../models/activityModel");
 const catchAsync = require("../utils/catchAsync");
@@ -12,6 +15,47 @@ const filterObj = (obj, ...allowedFields) => {
   });
 
   return newObj;
+};
+
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb(new AppError("Not an image! Please upload an image.", 400), false);
+  }
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+const deletePhotoFromServer = async (photo) => {
+  const path = `${__dirname}/../public/img/users/${photo}`;
+  await fs.unlink(path, (err) => {
+    if (err) return console.log(err);
+  });
+};
+
+exports.uploadUserPhoto = upload.single("photo");
+
+exports.resizeUserPhoto = (req, res, next) => {
+  if (!req.file) return next();
+
+  req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
+
+  sharp(req.file.buffer)
+    .resize(500, 500)
+    .toFormat("jpeg")
+    .jpeg({ quality: 90 })
+    .toFile(`public/img/users/${req.file.filename}`, (err) => {
+      if (err) {
+        return next(new AppError("Error processing image", 500));
+      }
+      next();
+    });
 };
 
 exports.getUsers = getAll(User);
@@ -118,6 +162,13 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     filteredBody = filterObj(req.body, "firstName", "lastName", "codiceFiscale");
   } else if (req.user.role === "admin") {
     filteredBody = req.body;
+  }
+
+  if (req.file) {
+    filteredBody.propic = req.file.filename;
+    if (req.user.propic !== "default.png") {
+      await deletePhotoFromServer(req.user.propic);
+    }
   }
 
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, { new: true, runValidators: true });
