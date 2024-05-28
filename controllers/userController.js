@@ -32,21 +32,21 @@ const upload = multer({
   fileFilter: multerFilter,
 });
 
-const deletePhotoFromServer = async (photo) => {
+const deletePhotoFromServer = catchAsync(async (photo) => {
   const path = `${__dirname}/../public/img/users/${photo}`;
   await fs.unlink(path, (err) => {
     if (err) return console.log(err);
   });
-};
+});
 
 exports.uploadUserPhoto = upload.single("photo");
 
-exports.resizeUserPhoto = (req, res, next) => {
+exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   if (!req.file) return next();
 
   req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
 
-  sharp(req.file.buffer)
+  await sharp(req.file.buffer)
     .resize(500, 500)
     .toFormat("jpeg")
     .jpeg({ quality: 90 })
@@ -56,7 +56,7 @@ exports.resizeUserPhoto = (req, res, next) => {
       }
       next();
     });
-};
+});
 
 exports.getUsers = getAll(User);
 exports.getUser = getOne(User);
