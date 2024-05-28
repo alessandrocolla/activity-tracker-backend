@@ -18,7 +18,7 @@ router.patch("/updateMyPassword", authController.updatePassword);
 
 router.patch("/changeStatus/:id", authController.restrictTo("admin"), userController.changeStatus);
 
-router.patch("/updateMe", userController.updateMe);
+router.patch("/updateMe", userController.uploadUserPhoto, userController.resizeUserPhoto, userController.updateMe);
 
 router.route("/").get(authController.restrictTo("admin"), userController.getUsers).post(userController.createUser);
 
