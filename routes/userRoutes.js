@@ -3,8 +3,15 @@ const userController = require("../controllers/userController");
 const authController = require("../controllers/authController");
 const { restrictToOwnerOrAdmin } = require("../controllers/authController");
 const User = require("../models/userModel");
+const activityRouter = require("./activityRoutes");
 
 const router = express.Router();
+
+// Nested Routes
+
+router.use("/:userID/activities", activityRouter);
+
+// Non-Nested Routes
 
 router.post("/signup", authController.signup);
 router.post("/login", authController.loginAuth, authController.login);
@@ -33,14 +40,6 @@ router
   .route("/")
   .get(authController.protectRoute, authController.restrictTo("admin"), userController.getUsers)
   .post(userController.createUser);
-
-router
-  .route("/:id/activities")
-  .get(authController.protectRoute, authController.restrictTo("admin"), userController.getUserActivities);
-
-router
-  .route("/:userID/activities/:activityID")
-  .patch(authController.protectRoute, authController.restrictTo("admin"), userController.updateUserActivities);
 
 router
   .route("/:id")

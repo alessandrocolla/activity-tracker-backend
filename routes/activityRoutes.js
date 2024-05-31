@@ -4,11 +4,16 @@ const authController = require("../controllers/authController");
 const { restrictToOwnerOrAdmin } = require("../controllers/authController");
 const Activity = require("../models/activityModel");
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 router
   .route("/")
-  .get(authController.restrictTo("admin"), authController.protectRoute, activityController.getActivities)
+  .get(
+    authController.protectRoute,
+    authController.restrictTo("admin"),
+    activityController.setUserID,
+    activityController.getActivities,
+  )
   .post(authController.protectRoute, activityController.createActivity);
 
 router.get("/me", authController.protectRoute, activityController.personalActivities);
@@ -16,7 +21,12 @@ router.get("/me", authController.protectRoute, activityController.personalActivi
 router
   .route("/:id")
   .get(authController.protectRoute, restrictToOwnerOrAdmin(Activity), activityController.getActivity)
-  .patch(authController.protectRoute, restrictToOwnerOrAdmin(Activity), activityController.updateActivity)
+  .patch(
+    authController.protectRoute,
+    restrictToOwnerOrAdmin(Activity),
+    activityController.setUserID,
+    activityController.updateActivity,
+  )
   .delete(authController.protectRoute, restrictToOwnerOrAdmin(Activity), activityController.deleteActivity);
 
 module.exports = router;

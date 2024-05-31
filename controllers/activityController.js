@@ -3,6 +3,12 @@ const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const { getAll, getOne, updateOne, deleteOne } = require("./handlerFactory");
 
+exports.setUserID = catchAsync(async (req, res, next) => {
+  // allow Nested Routes
+  if (req.params.userID) req.body.user = req.params.userID;
+  next();
+});
+
 exports.getActivities = getAll(Activity);
 exports.getActivity = getOne(Activity);
 exports.updateActivity = updateOne(Activity);
