@@ -8,7 +8,7 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(authController.restrictTo("admin"), authController.protectRoute, activityController.getActivities)
+  .get(authController.protectRoute, authController.restrictTo("admin"), activityController.getActivities)
   .post(authController.protectRoute, activityController.createActivity);
 
 router.get("/me", authController.protectRoute, activityController.personalActivities);
