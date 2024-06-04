@@ -15,6 +15,8 @@ exports.updateActivity = updateOne(Activity);
 exports.deleteActivity = deleteOne(Activity);
 
 exports.createActivity = catchAsync(async (req, res, next) => {
+  if (req.user.role === "user") req.body.userID = req.user._id;
+
   const newActivity = await Activity.create({
     taskName: req.body.taskName,
     taskID: req.body.taskID,
