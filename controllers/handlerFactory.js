@@ -81,3 +81,21 @@ exports.deleteOne = (Model) =>
       data: null,
     });
   });
+
+/**
+ * To filter response data in Production
+ * @param {number} statusCode
+ * @param {object} objForJson
+ * @param {*} res Response
+ */
+exports.responseHandler = (statusCode, objForJson, res) => {
+  if (process.env.NODE_ENV === "production") {
+    return res.status(statusCode).json({
+      status: objForJson.status,
+      token: objForJson.token,
+      data: null,
+    });
+  }
+
+  res.status(statusCode).json(objForJson);
+};

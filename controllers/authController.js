@@ -7,6 +7,7 @@ const Activity = require("../models/activityModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const Email = require("../utils/email");
+const { responseHandler } = require("./handlerFactory");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -27,13 +28,17 @@ const createSendToken = (user, statusCode, res) => {
 
   user.password = undefined;
 
-  res.status(statusCode).json({
-    status: "success",
-    token,
-    data: {
-      user,
+  responseHandler(
+    statusCode,
+    {
+      status: "success",
+      token,
+      data: {
+        user,
+      },
     },
-  });
+    res,
+  );
 };
 
 exports.signup = async (req, res, next) => {
@@ -47,12 +52,16 @@ exports.signup = async (req, res, next) => {
       codiceFiscale: req.body.codiceFiscale,
     });
 
-    res.status(201).json({
-      status: "success",
-      data: {
-        user: newUser,
+    responseHandler(
+      201,
+      {
+        status: "success",
+        data: {
+          user: newUser,
+        },
       },
-    });
+      res,
+    );
   } catch (err) {
     res.status(500).json({
       status: "fail",
