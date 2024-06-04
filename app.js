@@ -6,12 +6,17 @@ const cookieParser = require("cookie-parser");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
+const cors = require("cors");
 
 const userRouter = require("./routes/userRoutes");
 const taskRouter = require("./routes/taskRoutes");
 const activityRouter = require("./routes/activityRoutes");
 
 const app = express();
+
+app.use(cors());
+
+app.options("*", cors());
 
 // MIDDLEWARES
 
