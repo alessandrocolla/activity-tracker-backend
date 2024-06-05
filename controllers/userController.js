@@ -99,10 +99,16 @@ exports.changeStatus = catchAsync(async (req, res, next) => {
     if (req.body.isActive === true) await Activity.updateMany({ userID: req.params.id }, { isActive: true });
 
     try {
+      let welcomeURL;
       const welcomeToken = user.createPasswordResetToken(true);
       await user.save({ validateBeforeSave: false });
 
-      const welcomeURL = `${req.protocol}://${req.get("host")}/reset-password/${welcomeToken}`;
+      if (process.env.NODE_ENV === "production") {
+        if (!req.params.uri) return next(new AppError("Error, page not found.", 404));
+
+        welcomeURL = `${req.protocol}://${req.params.uri}/reset-password/${welcomeToken}`;
+      } else if (process.env.NODE_ENV === "development")
+        welcomeURL = `${req.protocol}://${req.get("host")}/reset-password/${welcomeToken}`;
 
       await new Email(user, welcomeURL).sendWelcome();
 
