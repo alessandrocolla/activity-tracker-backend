@@ -3,6 +3,8 @@ const activityController = require("../controllers/activityController");
 const authController = require("../controllers/authController");
 const { restrictToOwnerOrAdmin } = require("../controllers/authController");
 const Activity = require("../models/activityModel");
+const { body } = require("express-validator");
+const { error } = require("console");
 
 const router = express.Router({ mergeParams: true });
 
