@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 const AppError = require("../utils/appError");
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
@@ -16,6 +17,7 @@ const activitySchema = new mongoose.Schema({
   activityDate: {
     type: Date,
     required: [true, "An activity must have an activity date"],
+    validate: [validator.isDate, "Date is not valid"],
   },
   startTime: {
     type: Date,
@@ -66,6 +68,27 @@ activitySchema.pre("save", async function () {
       403,
     );
   }
+});
+
+activitySchema.pre("save", function (next) {
+  const today = new Date();
+  const year = this.activityDate.getFullYear().toString();
+
+  const currentYear = new Date().getFullYear().toString();
+  if (year !== currentYear) {
+    return next(new AppError("Forbidden: the activity must be in the current year", 403));
+  }
+
+  if (this.activityDate > today) {
+    return next(new AppError("Forbidden: activity date cannot be in the future", 403));
+  }
+
+  const currentMonth = new Date().getMonth().toString();
+  if (this.activityDate.getMonth().toString() !== currentMonth) {
+    return next(new AppError("Forbidden: activity date month must be the current month", 403));
+  }
+
+  next();
 });
 
 const Activity = mongoose.model("Activity", activitySchema);

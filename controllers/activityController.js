@@ -16,6 +16,11 @@ exports.deleteActivity = deleteOne(Activity);
 
 exports.createActivity = catchAsync(async (req, res, next) => {
   if (req.user.role === "user") req.body.userID = req.user._id;
+  const dateArray = req.body.activityDate.split("-");
+  if (dateArray[0].length !== 4) return next(new AppError("Bad request: year must have exactly 4 digits", 400));
+  if (dateArray[1].length !== 2 || dateArray[2].length !== 2) {
+    return next(new AppError("Bad request: month and day must have exactly 2 digits (f.e. 01, 02, 03...)", 400));
+  }
 
   const newActivity = await Activity.create({
     taskName: req.body.taskName,
