@@ -77,13 +77,14 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   try {
     let resetURL;
+    const port = process.env.ANGULAR_PORT || 4200;
     const resetToken = user.createPasswordResetToken(false);
     await user.save({ validateBeforeSave: false });
 
     if (process.env.NODE_ENV === "production") {
-      if (!req.params.uri) return next(new AppError("Error, page not found.", 404));
+      if (!req.query.uri) return next(new AppError("Error, page not found.", 404));
 
-      resetURL = `${req.protocol}://${req.params.uri}/reset-password/${resetToken}`;
+      resetURL = `${req.protocol}://${req.query.uri}:${port}/reset-password/${resetToken}`;
     } else if (process.env.NODE_ENV === "development")
       resetURL = `${req.protocol}://${req.get("host")}/reset-password/${resetToken}`;
 

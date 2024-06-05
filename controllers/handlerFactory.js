@@ -92,6 +92,11 @@ exports.responseHandler = (statusCode, objForJson, res) => {
   if (process.env.NODE_ENV === "production") {
     return res.status(statusCode).json({
       status: objForJson.status,
+      token: objForJson.token,
+      data: {
+        role: objForJson.data.user.role,
+        id: objForJson.data.user.id,
+      },
     });
   }
 

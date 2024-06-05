@@ -100,13 +100,14 @@ exports.changeStatus = catchAsync(async (req, res, next) => {
 
     try {
       let welcomeURL;
+      const port = process.env.ANGULAR_PORT || 4200;
       const welcomeToken = user.createPasswordResetToken(true);
       await user.save({ validateBeforeSave: false });
 
       if (process.env.NODE_ENV === "production") {
-        if (!req.params.uri) return next(new AppError("Error, page not found.", 404));
+        if (!req.query.uri) return next(new AppError("Error, page not found.", 404));
 
-        welcomeURL = `${req.protocol}://${req.params.uri}/reset-password/${welcomeToken}`;
+        welcomeURL = `${req.protocol}://${req.query.uri}:${port}/reset-password/${welcomeToken}`;
       } else if (process.env.NODE_ENV === "development")
         welcomeURL = `${req.protocol}://${req.get("host")}/reset-password/${welcomeToken}`;
 
