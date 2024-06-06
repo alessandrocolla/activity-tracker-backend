@@ -145,7 +145,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   if (req.user.role === "user") {
     const { email, role, isAccepted, isActive } = req.body;
     if (email || role || isAccepted || isActive)
-      return next(new AppError("Forbidden, you don't have the permission to change these informations.", 403));
+      return next(new AppError("Forbidden, you don't have the permission to change these information.", 403));
 
     filteredBody = filterObj(req.body, "firstName", "lastName", "codiceFiscale");
   } else if (req.user.role === "admin") {
