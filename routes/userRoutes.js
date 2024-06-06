@@ -9,8 +9,6 @@ const router = express.Router();
 
 // Nested Routes
 
-router.use("/:userID/activities", activityRouter);
-
 // Non-Nested Routes
 
 router.post("/signup", authController.signup);
