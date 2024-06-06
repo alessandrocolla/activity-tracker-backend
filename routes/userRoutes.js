@@ -34,10 +34,7 @@ router.patch(
   userController.updateMe,
 );
 
-router
-  .route("/")
-  .get(authController.protectRoute, authController.restrictTo("admin"), userController.getUsers)
-  .post(userController.createUser);
+router.route("/").get(authController.protectRoute, authController.restrictTo("admin"), userController.getUsers);
 
 router
   .route("/:id")
