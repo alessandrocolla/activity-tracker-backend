@@ -26,6 +26,8 @@ router.patch(
   userController.changeStatus,
 );
 
+router.get("/getMe", authController.protectRoute, userController.getMe, userController.getUser);
+
 router.patch(
   "/updateMe",
   authController.protectRoute,
