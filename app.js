@@ -14,7 +14,7 @@ const activityRouter = require("./routes/activityRoutes");
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 
 app.options("*", cors());
 
