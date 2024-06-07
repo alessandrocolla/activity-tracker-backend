@@ -29,6 +29,17 @@ exports.getOne = (Model) =>
     const document = await Model.findById(req.params.id);
 
     if (!document) return next(new AppError("Document not found.", 404));
+    if (document.role) {
+      return res.status(200).json({
+        status: "success",
+        data: {
+          firstName: document.firstName,
+          lastName: document.lastName,
+          propic: document.propic,
+          codiceFiscale: document.codiceFiscale,
+        },
+      });
+    }
 
     res.status(200).json({
       status: "success",
