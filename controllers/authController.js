@@ -167,13 +167,13 @@ exports.logout = (req, res) => {
 
 exports.protectRoute = catchAsync(async (req, res, next) => {
   let token;
-  if (process.env.NODE_ENV === "production") {
+  if (process.env.NODE_ENV === "development") {
     if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
       token = req.headers.authorization.split(" ")[1];
     }
   }
 
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV === "production") {
     if (req.headers.cookie && req.headers.cookie.startsWith("jwt")) {
       token = req.headers.cookie.split("=")[1];
     }
