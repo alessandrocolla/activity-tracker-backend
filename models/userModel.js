@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
       validator: function (el) {
         return firstLastNameRegex.test(el);
       },
-      message: (props) => `${props.value} is not a valid first name!`,
+      message: (props) => `${props.value} is not a valid last name!`,
     },
   },
   email: {
