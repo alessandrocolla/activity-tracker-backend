@@ -153,6 +153,22 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getUserActivities = catchAsync(async (req, res, next) => {
+  const activities = await Activity.find({ userID: req.params.id });
+
+  if (!activities || activities.length == 0) {
+    return next(new AppError(`No activities found for user with ${userID} ID.`, 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    results: activities.length,
+    data: {
+      activities,
+    },
+  });
+});
+
 exports.getMe = (req, res, next) => {
   req.params.id = req.user._id;
   next();
