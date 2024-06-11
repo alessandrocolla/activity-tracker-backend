@@ -44,6 +44,8 @@ router
   .patch(authController.protectRoute, authController.restrictTo("admin"), userController.updateUser)
   .delete(authController.protectRoute, restrictToOwnerOrAdmin(User), userController.deleteUser);
 
-router.route("/:userID/activities").get(authController.protectRoute, userController.getUserActivities);
+router
+  .route("/:userID/activities")
+  .get(authController.protectRoute, authController.restrictTo("admin"), userController.getUserActivities);
 
 module.exports = router;
