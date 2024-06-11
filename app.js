@@ -8,6 +8,7 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const cors = require("cors");
 
+const globalErrorHandler = require("./controllers/errorController");
 const userRouter = require("./routes/userRoutes");
 const taskRouter = require("./routes/taskRoutes");
 const activityRouter = require("./routes/activityRoutes");
@@ -68,5 +69,7 @@ app.use(
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/tasks", taskRouter);
 app.use("/api/v1/activities", activityRouter);
+
+app.use(globalErrorHandler);
 
 module.exports = app;
