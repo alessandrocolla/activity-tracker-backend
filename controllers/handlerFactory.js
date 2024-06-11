@@ -83,7 +83,7 @@ exports.deleteOne = (Model) =>
     if (!document) return next(new AppError("Document not found.", 404));
     if (document.role === "admin") return next(new AppError("Forbidden: Cannot delete an admin", 403));
 
-    document.updateOne({ isActive: false });
+    await document.updateOne({ isActive: false });
 
     if (document.email) {
       await Activity.updateMany({ userID: req.params.id }, { isActive: false });
