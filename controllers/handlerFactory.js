@@ -78,9 +78,12 @@ exports.updateOne = (Model) =>
 
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
-    const document = await Model.findByIdAndUpdate(req.params.id, { isActive: false });
+    const document = await Model.findById(req.params.id);
 
     if (!document) return next(new AppError("Document not found.", 404));
+    if (document.role === "admin") return next(new AppError("Forbidden: Cannot delete an admin", 403));
+
+    document.updateOne({ isActive: false });
 
     if (document.email) {
       await Activity.updateMany({ userID: req.params.id }, { isActive: false });
