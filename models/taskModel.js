@@ -22,6 +22,7 @@ const taskSchema = new mongoose.Schema({
     default: 0,
     min: [0, "Progress state must be above or equal to 0"],
     max: [100, "Progress state must be below or equal to 100"],
+    required: [true, "Please enter a number for the progress status"],
   },
 });
 
