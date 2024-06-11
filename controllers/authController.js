@@ -158,6 +158,7 @@ exports.logout = (req, res) => {
   res.cookie("jwt", "loggedOut", {
     expires: new Date(Date.now() + 10000),
     httpOnly: true,
+    sameSite: "Lax",
   });
 
   res.status(200).json({
@@ -167,38 +168,25 @@ exports.logout = (req, res) => {
 
 exports.protectRoute = catchAsync(async (req, res, next) => {
   let token;
-  if (process.env.NODE_ENV === "development") {
-    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
-      token = req.headers.authorization.split(" ")[1];
-    }
+  if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+    token = req.headers.authorization.split(" ")[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
 
-  if (process.env.NODE_ENV === "production") {
-    if (req.headers.cookie && req.headers.cookie.startsWith("jwt")) {
-      token = req.headers.cookie.split("=")[1];
-    }
-  }
+  if (!token) return next(new AppError("You are not logged in, log in to get access", 401));
 
-  if (!token) {
-    return next(new AppError("You are not logged in! Please log in to get access.", 401));
-  }
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
-  try {
-    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  const currentUser = await User.findById(decoded.id);
 
-    const currentUser = await User.findById(decoded.id);
-    if (!currentUser) {
-      return next(new AppError("The user belonging to this token does no longer exist.", 401));
-    }
+  if (!currentUser) return next(new AppError("The user belonging to this token no longer exists.", 401));
 
-    if (currentUser.changedPasswordAfter(decoded.iat)) {
-      return next(new AppError("User recently changed password! Please log in again.", 401));
-    }
+  if (currentUser.changedPasswordAfter(decoded.iat))
+    return next(new AppError("User recently changed password, please log in again.", 401));
 
-    req.user = currentUser;
-  } catch (err) {
-    return next();
-  }
+  res.locals.user = currentUser;
+  req.user = currentUser;
   next();
 });
 
