@@ -90,9 +90,9 @@ exports.changeStatus = catchAsync(async (req, res, next) => {
       if (process.env.NODE_ENV === "production") {
         if (!req.query.uri) return next(new AppError("Error, page not found.", 404));
 
-        welcomeURL = `${req.protocol}://${req.query.uri}:${port}/reset-password/${welcomeToken}`;
+        welcomeURL = `${req.protocol}://${req.query.uri}:${port}/resetPassword/${welcomeToken}`;
       } else if (process.env.NODE_ENV === "development")
-        welcomeURL = `${req.protocol}://${req.get("host")}/reset-password/${welcomeToken}`;
+        welcomeURL = `${req.protocol}://${req.get("host")}/resetPassword/${welcomeToken}`;
 
       await new Email(user, welcomeURL).sendWelcome();
 

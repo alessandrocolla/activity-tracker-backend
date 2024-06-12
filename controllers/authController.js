@@ -85,9 +85,9 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     if (process.env.NODE_ENV === "production") {
       if (!req.query.uri) return next(new AppError("Error, page not found.", 404));
 
-      resetURL = `${req.protocol}://${req.query.uri}:${port}/reset-password/${resetToken}`;
+      resetURL = `${req.protocol}://${req.query.uri}:${port}/resetPassword/${resetToken}`;
     } else if (process.env.NODE_ENV === "development")
-      resetURL = `${req.protocol}://${req.get("host")}/reset-password/${resetToken}`;
+      resetURL = `${req.protocol}://${req.get("host")}/resetPassword/${resetToken}`;
 
     await new Email(user, resetURL).sendPasswordReset();
 
