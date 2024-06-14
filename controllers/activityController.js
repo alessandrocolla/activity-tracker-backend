@@ -1,5 +1,5 @@
 const Activity = require("../models/activityModel");
-const AppError = require("../utils/appError");
+const APIFeatures = require("../utils/apiFeatures");
 const catchAsync = require("../utils/catchAsync");
 const { getAll, getOne, updateOne, deleteOne } = require("./handlerFactory");
 
@@ -37,9 +37,16 @@ exports.createActivity = catchAsync(async (req, res, next) => {
 });
 
 exports.personalActivities = catchAsync(async (req, res, next) => {
-  const userID = req.user.id;
+  let filter = {};
+  if (req.params.activityDate) filter = { activityDate: req.params.activityDate };
+  if (req.params.taskName) filter = { task: req.params.taskName };
+  if (req.params.isActive) filter = { isActive: req.params.isActive };
+  if (req.params._id) filter = { _id: req.params._id };
+  filter = { userID: req.user.id };
 
-  const userActivities = await Activity.find({ userID: userID });
+  const features = new APIFeatures(Activity.find(filter), req.query).filter().sort().limitFields().paginate();
+
+  const userActivities = await features.query;
 
   res.status(200).json({
     status: "success",
