@@ -44,12 +44,15 @@ exports.personalActivities = catchAsync(async (req, res, next) => {
   if (req.params._id) filter = { _id: req.params._id };
   filter = { userID: req.user.id };
 
+  const totalDocuments = await Activity.countDocuments(filter);
+
   const features = new APIFeatures(Activity.find(filter), req.query).filter().sort().limitFields().paginate();
 
   const userActivities = await features.query;
 
   res.status(200).json({
     status: "success",
+    totalDocuments,
     results: userActivities.length,
     data: {
       userActivities,
