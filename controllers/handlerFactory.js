@@ -13,12 +13,15 @@ exports.getAll = (Model) =>
     if (req.params._id) filter = { _id: req.params._id };
     filter = { isActive: true };
 
+    const totalDocuments = await Model.countDocuments(filter);
+
     const features = new APIFeatures(Model.find(filter), req.query).filter().sort().limitFields().paginate();
 
     const document = await features.query;
 
     res.status(200).json({
       status: "success",
+      totalDocuments,
       results: document.length,
       data: { document },
     });
