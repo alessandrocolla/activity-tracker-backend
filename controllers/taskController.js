@@ -1,5 +1,4 @@
 const Task = require("../models/taskModel");
-const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const { getAll, getOne, updateOne, deleteOne } = require("./handlerFactory");
 
