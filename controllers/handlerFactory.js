@@ -6,7 +6,7 @@ const Activity = require("../models/activityModel");
 exports.getAll = (Model) =>
   catchAsync(async (req, res, next) => {
     let filter = {};
-    if (req.params.activityDate) filter = { activityDate: req.params.activityDate };
+    if (req.params.startTime) filter = { startTime: req.params.startTime };
     if (req.params.taskName) filter = { task: req.params.taskName };
     if (req.params.firstName) filter = { firstName: req.params.firstName };
     if (req.params.lastName) filter = { lastName: req.params.lastName };
