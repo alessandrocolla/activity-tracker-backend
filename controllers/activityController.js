@@ -16,12 +16,10 @@ exports.deleteActivity = deleteOne(Activity);
 
 exports.createActivity = catchAsync(async (req, res, next) => {
   if (req.user.role === "user") req.body.userID = req.user._id;
-  req.body.activityDate = new Date(req.body.activityDate);
 
   const newActivity = await Activity.create({
     taskName: req.body.taskName,
     taskID: req.body.taskID,
-    activityDate: req.body.activityDate,
     startTime: req.body.startTime,
     endTime: req.body.endTime,
     notes: req.body.notes,
@@ -38,7 +36,8 @@ exports.createActivity = catchAsync(async (req, res, next) => {
 
 exports.personalActivities = catchAsync(async (req, res, next) => {
   let filter = {};
-  if (req.params.activityDate) filter = { activityDate: req.params.activityDate };
+  if (req.params.startTime) filter = { startTime: req.params.startTime };
+  if (req.params.endTime) filter = { endTime: req.params.endTime };
   if (req.params.taskName) filter = { task: req.params.taskName };
   if (req.params.isActive) filter = { isActive: req.params.isActive };
   if (req.params._id) filter = { _id: req.params._id };

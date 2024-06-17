@@ -54,7 +54,6 @@ app.use(
       "price",
       "taskName",
       "taskID",
-      "activityDate",
       "startTime",
       "endTime",
       "taskName",

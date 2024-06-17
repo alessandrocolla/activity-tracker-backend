@@ -14,11 +14,6 @@ const activitySchema = new mongoose.Schema({
     type: ObjectId,
     required: [true, "An activity must have an task ID"],
   },
-  activityDate: {
-    type: Date,
-    required: [true, "An activity must have an activity date"],
-    validate: [validator.isDate, "Date is not valid"],
-  },
   startTime: {
     type: Date,
     required: [true, "An activity must have a start time"],
@@ -45,13 +40,12 @@ const activitySchema = new mongoose.Schema({
 
 activitySchema.pre("save", async function () {
   const userID = this.userID;
-  const activityDate = this.activityDate;
   const startTime = this.startTime;
   const endTime = this.endTime;
 
   const existingActivities = await Activity.find({
     userID,
-    activityDate,
+    startTime,
   });
 
   const overlappingActivities = existingActivities.find((activity) => {
@@ -72,19 +66,19 @@ activitySchema.pre("save", async function () {
 
 activitySchema.pre("save", function (next) {
   const today = new Date();
-  const year = this.activityDate.getFullYear().toString();
+  const year = this.startTime.getFullYear().toString();
 
   const currentYear = new Date().getFullYear().toString();
   if (year !== currentYear) {
     return next(new AppError("Forbidden: the activity must be in the current year", 403));
   }
 
-  if (this.activityDate > today) {
+  if (this.startTime > today) {
     return next(new AppError("Forbidden: activity date cannot be in the future", 403));
   }
 
   const currentMonth = new Date().getMonth().toString();
-  if (this.activityDate.getMonth().toString() !== currentMonth) {
+  if (this.startTime.getMonth().toString() !== currentMonth) {
     return next(new AppError("Forbidden: activity date month must be the current month", 403));
   }
 
