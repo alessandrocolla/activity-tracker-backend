@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
+const AppError = require("../utils/appError");
 
 const taskSchema = new mongoose.Schema({
   taskName: {
     type: String,
     required: [true, "Please enter the task name"],
+    trim: true,
   },
   isActive: {
     type: Boolean,
@@ -24,6 +26,28 @@ const taskSchema = new mongoose.Schema({
     max: [100, "Progress state must be below or equal to 100"],
     required: [true, "Please enter a number for the progress status"],
   },
+});
+
+taskSchema.pre("save", async function (next) {
+  const task = this;
+
+  if (!task.isModified("taskName")) {
+    return next();
+  }
+
+  try {
+    const existingTask = await mongoose.models.Task.findOne({
+      taskName: { $regex: new RegExp("^" + task.taskName + "$", "i") },
+    });
+
+    if (existingTask) {
+      const error = new AppError("Task name already exists", 400);
+      return next(error);
+    }
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 const Task = mongoose.model("Task", taskSchema);
