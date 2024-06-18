@@ -36,13 +36,7 @@ exports.createActivity = catchAsync(async (req, res, next) => {
 
 exports.personalActivities = catchAsync(async (req, res, next) => {
   let filter = {};
-  if (req.params.startTime) filter = { startTime: req.params.startTime };
-  if (req.params.endTime) filter = { endTime: req.params.endTime };
-  if (req.params.taskName) filter = { task: req.params.taskName };
-  if (req.params.isActive) filter = { isActive: req.params.isActive };
-  if (req.params._id) filter = { _id: req.params._id };
 
-  if (req.query.startTime) filter.startTime = new Date(req.query.startTime);
   if (req.query.endTime) {
     const endTime = new Date(req.query.endTime.lte);
     endTime.setHours(23, 59, 59, 999);
