@@ -41,6 +41,14 @@ exports.personalActivities = catchAsync(async (req, res, next) => {
   if (req.params.taskName) filter = { task: req.params.taskName };
   if (req.params.isActive) filter = { isActive: req.params.isActive };
   if (req.params._id) filter = { _id: req.params._id };
+
+  if (req.query.startTime) filter.startTime = new Date(req.query.startTime);
+  if (req.query.endTime) {
+    const endTime = new Date(req.query.endTime.lte);
+    endTime.setHours(23, 59, 59, 999);
+    req.query.endTime.lte = endTime;
+  }
+
   filter = { userID: req.user.id };
 
   const totalDocuments = await Activity.countDocuments(filter);
@@ -60,11 +68,7 @@ exports.personalActivities = catchAsync(async (req, res, next) => {
 });
 
 exports.getHoursPerActivities = catchAsync(async (req, res, next) => {
-  let filter = {};
-  if (req.params.startTime) filter.startTime = new Date(req.params.startTime);
-  if (req.params.endTime) filter.endTime = new Date(req.params.endTime);
-
-  const features = new APIFeatures(Activity.find(filter), req.query).filter().sort().limitFields().paginate();
+  const features = new APIFeatures(Activity.find(), req.query).filter().sort().limitFields().paginate();
 
   const activities = await features.query;
 
