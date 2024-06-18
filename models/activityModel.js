@@ -4,38 +4,49 @@ const AppError = require("../utils/appError");
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-const activitySchema = new mongoose.Schema({
-  taskName: {
-    type: String,
-    required: [true, "An activity must have a task name"],
-    trim: true,
+const activitySchema = new mongoose.Schema(
+  {
+    taskName: {
+      type: String,
+      required: [true, "An activity must have a task name"],
+      trim: true,
+    },
+    taskID: {
+      type: ObjectId,
+      required: [true, "An activity must have an task ID"],
+    },
+    startTime: {
+      type: Date,
+      required: [true, "An activity must have a start time"],
+    },
+    endTime: {
+      type: Date,
+      required: [true, "An activity must have a end time"],
+    },
+    notes: {
+      type: String,
+      required: [true, "An activity must have some notes"],
+      trim: true,
+      maxlength: [100, "Notes must have less or equal than 100 characters"],
+    },
+    userID: {
+      type: ObjectId,
+      required: [true, "An activity must have an user ID"],
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
-  taskID: {
-    type: ObjectId,
-    required: [true, "An activity must have an task ID"],
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
-  startTime: {
-    type: Date,
-    required: [true, "An activity must have a start time"],
-  },
-  endTime: {
-    type: Date,
-    required: [true, "An activity must have a end time"],
-  },
-  notes: {
-    type: String,
-    required: [true, "An activity must have some notes"],
-    trim: true,
-    maxlength: [100, "Notes must have less or equal than 100 characters"],
-  },
-  userID: {
-    type: ObjectId,
-    required: [true, "An activity must have an user ID"],
-  },
-  isActive: {
-    type: Boolean,
-    default: true,
-  },
+);
+
+activitySchema.virtual("hours").get(function () {
+  const hours = (this.endTime - this.startTime) / (60 * 60 * 1000);
+  return hours.toFixed(2);
 });
 
 activitySchema.pre("save", async function () {
