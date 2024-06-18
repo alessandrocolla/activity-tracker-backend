@@ -18,6 +18,13 @@ router
 
 router.get("/me", authController.protectRoute, activityController.personalActivities);
 
+router.get(
+  "/hoursPerActivity",
+  authController.protectRoute,
+  authController.restrictTo("admin"),
+  activityController.getHoursPerActivities,
+);
+
 router
   .route("/:id")
   .get(authController.protectRoute, restrictToOwnerOrAdmin(Activity), activityController.getActivity)
