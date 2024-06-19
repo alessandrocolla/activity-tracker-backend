@@ -46,6 +46,10 @@ const activitySchema = new mongoose.Schema(
 
 activitySchema.virtual("hours").get(function () {
   const hours = (this.endTime - this.startTime) / (60 * 60 * 1000);
+  if (isNaN(hours)) {
+    delete this.hours;
+    return;
+  }
   return hours.toFixed(2);
 });
 
