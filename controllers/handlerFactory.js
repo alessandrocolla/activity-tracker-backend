@@ -15,7 +15,11 @@ exports.getAll = (Model) =>
 
     const totalDocuments = await Model.countDocuments(filter);
 
-    const features = new APIFeatures(Model.find(filter), req.query).filter().sort().limitFields().paginate();
+    const features = new APIFeatures(Model.find(filter), req.query, Model.modelName)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
 
     const document = await features.query;
 

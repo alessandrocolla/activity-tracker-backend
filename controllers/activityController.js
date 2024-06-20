@@ -62,7 +62,7 @@ exports.personalActivities = catchAsync(async (req, res, next) => {
 });
 
 exports.getHoursPerActivities = catchAsync(async (req, res, next) => {
-  const features = new APIFeatures(Activity.find(), req.query).filter().sort().limitFields().paginate();
+  const features = new APIFeatures(Activity.find(), req.query, "Activity").filter().sort().limitFields().paginate();
 
   const activities = await features.query;
 
