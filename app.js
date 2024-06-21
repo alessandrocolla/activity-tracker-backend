@@ -7,6 +7,8 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
 
 const globalErrorHandler = require("./controllers/errorController");
 const userRouter = require("./routes/userRoutes");
@@ -14,6 +16,8 @@ const taskRouter = require("./routes/taskRoutes");
 const activityRouter = require("./routes/activityRoutes");
 
 const app = express();
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(cors({ origin: true, credentials: true }));
 
