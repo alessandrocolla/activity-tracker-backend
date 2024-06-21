@@ -11,7 +11,100 @@
       "description": "Main server"
     }
   ],
-  "paths": {},
+  "paths": {
+    "/tasks": {
+      "get": {
+        "tags": ["Tasks"],
+        "summary": "Returns all tasks available in the database",
+        "description": "Users can view only active tasks while admins can view all tasks",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "You are not logged in, log in to get access"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Tasks"],
+        "summary": "This route adds a task to the database",
+        "description": "Only admin can add a task to the database",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Task"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Resource created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Task name already exists"
+          },
+          "403": {
+            "description": "Unauthorized: you do not have the permission to perform this action"
+          },
+          "500": {
+            "description": "Error occurred while processing the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "example": {
+                    "errors": [
+                      "Task validation failed: taskName: Please enter the task name",
+                      "Task validation failed: state: State is either: 'To do', 'In progress', 'Done'",
+                      "Task validation failed: progressState: Progress state must be above or equal to 0",
+                      "Task validation failed: progressState: Progress state must be below or equal to 100",
+                      "Task validation failed: progressState: Please enter a number for the progress status"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "components": {
     "schemas": {
       "Task": {
