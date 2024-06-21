@@ -13,7 +13,37 @@
   ],
   "paths": {},
   "components": {
-    "schemas": {},
+    "schemas": {
+      "Task": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "6644c8c158e728aeecdb8859"
+          },
+          "taskName": {
+            "type": "string",
+            "example": "Frontend"
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          },
+          "state": {
+            "type": "string",
+            "enum": ["To do", "In progress", "Done"],
+            "default": "To do",
+            "example": "In progress"
+          },
+          "progressState": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          }
+        },
+        "required": ["taskName", "progressState"]
+      }
+    },
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
