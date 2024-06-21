@@ -11,7 +11,7 @@ exports.getAll = (Model) =>
     if (req.params.firstName) filter = { firstName: req.params.firstName };
     if (req.params.lastName) filter = { lastName: req.params.lastName };
     if (req.params._id) filter = { _id: req.params._id };
-    filter = { isActive: true };
+    if (req.user.role !== "admin") filter = { isActive: true };
 
     const totalDocuments = await Model.countDocuments(filter);
 
