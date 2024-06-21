@@ -110,10 +110,6 @@
       "Task": {
         "type": "object",
         "properties": {
-          "_id": {
-            "type": "string",
-            "example": "6644c8c158e728aeecdb8859"
-          },
           "taskName": {
             "type": "string",
             "example": "Frontend"
@@ -135,6 +131,109 @@
           }
         },
         "required": ["taskName", "progressState"]
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "example": "Mario"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Rossi"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "mario.rossi@top-network.it",
+            "unique": true
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "example": "Password1234.",
+            "minLength": 8
+          },
+          "passwordConfirm": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["user", "admin"],
+            "example": "user"
+          },
+          "passwordResetToken": {
+            "type": "string",
+            "example": "someRandomToken123"
+          },
+          "passwordResetExpires": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-12-31T23:59:59.999Z"
+          },
+          "passwordChangedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-01-01T00:00:00.000Z"
+          },
+          "propic": {
+            "type": "string",
+            "default": "default.png"
+          },
+          "codiceFiscale": {
+            "type": "string",
+            "minlength": 16,
+            "maxlength": 16,
+            "example": "RSSMRA85M01H501Z",
+            "unique": true
+          },
+          "isAccepted": {
+            "type": "boolean",
+            "default": false
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": ["firstName", "lastName", "email", "codiceFiscale"]
+      },
+      "Activity": {
+        "type": "object",
+        "properties": {
+          "taskName": {
+            "type": "string",
+            "trim": true
+          },
+          "taskID": {
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 100,
+            "trim": true
+          },
+          "userID": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "required": ["taskName", "taskID", "startTime", "endTime", "notes", "userID"]
       }
     },
     "securitySchemes": {
