@@ -42,8 +42,7 @@ const createSendToken = (user, statusCode, res) => {
   );
 };
 
-exports.signup = async (req, res, next) => {
-  try {
+exports.signup = catchAsync(async (req, res, next) => {
     const newUser = await User.create({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
@@ -63,13 +62,7 @@ exports.signup = async (req, res, next) => {
       },
       res,
     );
-  } catch (err) {
-    res.status(500).json({
-      status: "fail",
-      message: err,
-    });
-  }
-};
+});
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
@@ -125,8 +118,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res);
 });
 
-exports.login = async (req, res, next) => {
-  try {
+exports.login = catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -144,15 +136,9 @@ exports.login = async (req, res, next) => {
       });
     }
     createSendToken(user, 200, res);
-  } catch (err) {
-    res.status(500).json({
-      status: "fail",
-      message: err,
-    });
-  }
 
   next();
-};
+});
 
 exports.logout = (req, res) => {
   res.cookie("jwt", "loggedOut", {
