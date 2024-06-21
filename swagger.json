@@ -69,12 +69,6 @@
             }
           },
           "400": {
-            "description": "Task name already exists"
-          },
-          "403": {
-            "description": "Unauthorized: you do not have the permission to perform this action"
-          },
-          "500": {
             "description": "Error occurred while processing the request",
             "content": {
               "application/json": {
@@ -90,6 +84,7 @@
                   },
                   "example": {
                     "errors": [
+                      "Task name already exists",
                       "Task validation failed: taskName: Please enter the task name",
                       "Task validation failed: state: State is either: 'To do', 'In progress', 'Done'",
                       "Task validation failed: progressState: Progress state must be above or equal to 0",
@@ -100,6 +95,162 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "You are not logged in, log in to get access"
+          },
+          "403": {
+            "description": "Unauthorized: you do not have the permission to perform this action"
+          }
+        }
+      }
+    },
+    "/tasks/{id}": {
+      "get": {
+        "tags": ["Tasks"],
+        "summary": "Returns a task specifying its id",
+        "description": "Both users and admins can view a single task",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "6644c8c158e728aeecdb8859"
+            },
+            "description": "The id of the task to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "You are not logged in, log in to get access"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Tasks"],
+        "summary": "Edit the data of a task by specifying its id",
+        "description": "Only the admin can edit a task",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "6644c8c158e728aeecdb8859"
+            },
+            "description": "The id of the task to retrieve"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Task"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error occurred while processing the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "example": {
+                    "errors": [
+                      "This field value already exists: \"Frontend\". Please choose a different value!",
+                      "Task validation failed: taskName: Please enter the task name",
+                      "Task validation failed: state: State is either: 'To do', 'In progress', 'Done'",
+                      "Task validation failed: progressState: Progress state must be above or equal to 0",
+                      "Task validation failed: progressState: Progress state must be below or equal to 100",
+                      "Task validation failed: progressState: Please enter a number for the progress status"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "You are not logged in, log in to get access"
+          },
+          "403": {
+            "description": "Unauthorized: you do not have the permission to perform this action"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Tasks"],
+        "summary": "Delete a task by specifying its id",
+        "description": "Only the admin can delete a task",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "6644c8c158e728aeecdb8859"
+            },
+            "description": "The id of the task to retrieve"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Request executed successfully"
+          },
+          "401": {
+            "description": "You are not logged in, log in to get access"
+          },
+          "403": {
+            "description": "Unauthorized: you do not have the permission to perform this action"
           }
         }
       }
