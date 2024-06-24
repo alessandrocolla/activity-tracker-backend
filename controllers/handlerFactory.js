@@ -2,6 +2,7 @@ const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const APIFeatures = require("../utils/apiFeatures");
 const Activity = require("../models/activityModel");
+const User = require("../models/userModel");
 
 exports.getAll = (Model) =>
   catchAsync(async (req, res, next) => {
@@ -56,14 +57,16 @@ exports.getOne = (Model) =>
 
 exports.updateOne = (Model) =>
   catchAsync(async (req, res, next) => {
-    const document = await Model.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    let document = await Model.findById(req.params.id);
 
     if (!document) return next(new AppError("Document not found.", 404));
 
     if (document.role === "user") {
+      document = await document.updateOne(req.body, {
+        new: true,
+        runValidators: true,
+      });
+
       res.status(200).json({
         status: "success",
         data: {
@@ -73,7 +76,30 @@ exports.updateOne = (Model) =>
           codiceFiscale: req.body.codiceFiscale,
         },
       });
+    } else if (document.userID && req.body.isActive === true) {
+      const userDoc = await User.findById(document.userID);
+
+      if (!userDoc) return next(new AppError("User not found.", 404));
+      else if (userDoc.isActive === false)
+        return next(new AppError("Cannot activate the activity of an unactive user.", 403));
+
+      document = await document.updateOne(req.body, {
+        new: true,
+        runValidators: true,
+      });
+
+      res.status(200).json({
+        status: "success",
+        data: {
+          document,
+        },
+      });
     } else {
+      document = await document.updateOne(req.body, {
+        new: true,
+        runValidators: true,
+      });
+
       res.status(200).json({
         status: "success",
         data: {
