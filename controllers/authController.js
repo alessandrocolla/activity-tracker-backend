@@ -185,7 +185,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
-  await user.save();
+  await user.save({ runValidators: true });
 
   createSendToken(user, 200, res);
 });

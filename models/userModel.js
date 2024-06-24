@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
       },
       message: (props) => `${props.value} is not a valid first name!`,
     },
+    trim: true,
   },
   lastName: {
     type: String,
@@ -29,6 +30,7 @@ const userSchema = new mongoose.Schema({
       },
       message: (props) => `${props.value} is not a valid last name!`,
     },
+    trim: true,
   },
   email: {
     type: String,
@@ -36,6 +38,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
     validate: [validator.isEmail, "Please provide a valid email"],
+    trim: true,
   },
   password: {
     type: String,
@@ -45,6 +48,7 @@ const userSchema = new mongoose.Schema({
       validator.isStrongPassword,
       "Password must be at least 8 characters long and must contain: at least one lowercase character, at least one uppercase character, at least one number and at least one symbol",
     ],
+    trim: true,
   },
   passwordConfirm: {
     type: String,
@@ -54,6 +58,7 @@ const userSchema = new mongoose.Schema({
       },
       message: "Passwords are not the same!",
     },
+    trim: true,
   },
   role: {
     type: String,
@@ -79,6 +84,7 @@ const userSchema = new mongoose.Schema({
       },
       message: (props) => `${props.value} is not a valid codiceFiscale (tax code)!`,
     },
+    trim: true,
   },
   isAccepted: {
     type: Boolean,
