@@ -45,6 +45,7 @@ exports.getOne = (Model) =>
           lastName: document.lastName,
           propic: document.propic,
           codiceFiscale: document.codiceFiscale,
+          email: document.email,
         },
       });
     }
