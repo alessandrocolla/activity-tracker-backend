@@ -43,25 +43,25 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
-    const newUser = await User.create({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email: req.body.email,
-      password: req.body.password,
-      passwordConfirm: req.body.passwordConfirm,
-      codiceFiscale: req.body.codiceFiscale,
-    });
+  const newUser = await User.create({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    password: req.body.password,
+    passwordConfirm: req.body.passwordConfirm,
+    codiceFiscale: req.body.codiceFiscale,
+  });
 
-    responseHandler(
-      201,
-      {
-        status: "success",
-        data: {
-          user: newUser,
-        },
+  responseHandler(
+    201,
+    {
+      status: "success",
+      data: {
+        user: newUser,
       },
-      res,
-    );
+    },
+    res,
+  );
 });
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
@@ -119,23 +119,23 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 });
 
 exports.login = catchAsync(async (req, res, next) => {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({
-        status: "fail",
-        message: "Please provide email and password",
-      });
-    }
+  if (!email || !password) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Please provide email and password",
+    });
+  }
 
-    const user = await User.findOne({ email }).select("+password");
-    if (!user || !(await user.correctPassword(password, user.password))) {
-      return res.status(401).json({
-        status: "fail",
-        message: "Incorrect email or password",
-      });
-    }
-    createSendToken(user, 200, res);
+  const user = await User.findOne({ email }).select("+password");
+  if (!user || !(await user.correctPassword(password, user.password))) {
+    return res.status(401).json({
+      status: "fail",
+      message: "Incorrect email or password",
+    });
+  }
+  createSendToken(user, 200, res);
 
   next();
 });
@@ -183,9 +183,13 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
     return next(new AppError("Your current password is wrong", 401));
   }
 
+  if (req.body.passwordCurrent === req.body.password) {
+    return next(new AppError("New password cannot be the same as the current password", 400));
+  }
+
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
-  await user.save();
+  await user.save({ runValidators: true });
 
   createSendToken(user, 200, res);
 });
