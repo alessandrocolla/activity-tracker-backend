@@ -897,6 +897,542 @@
           }
         }
       }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Get user by ID",
+        "description": "This endpoint retrieves a user by their ID. It returns the user's first name, last name, profile picture, and codice fiscale. This route is restricted to admins and to the owner of the retrieved ID.",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the user to retrieve",
+            "schema": {
+              "type": "string",
+              "example": "66793f77d94a25d7b24f1186"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "firstName": {
+                          "$ref": "#/components/schemas/User/properties/firstName"
+                        },
+                        "lastName": {
+                          "$ref": "#/components/schemas/User/properties/lastName"
+                        },
+                        "propic": {
+                          "$ref": "#/components/schemas/User/properties/propic"
+                        },
+                        "codiceFiscale": {
+                          "$ref": "#/components/schemas/User/properties/codiceFiscale"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid _id: 664b56f8743d9c1f8dd2."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You do not have permission to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Document not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No document found with that ID"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update user by ID",
+        "description": "This endpoint allows an admin to update a user's information by their ID. It updates the user document with the provided fields and returns the updated information.",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the user to update",
+            "schema": {
+              "type": "string",
+              "example": "6644c5ad58e728aeecdb8852"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Fields to update for the user",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "$ref": "#/components/schemas/User/properties/firstName"
+                  },
+                  "lastName": {
+                    "$ref": "#/components/schemas/User/properties/lastName"
+                  },
+                  "propic": {
+                    "$ref": "#/components/schemas/User/properties/propic"
+                  },
+                  "codiceFiscale": {
+                    "$ref": "#/components/schemas/User/properties/codiceFiscale"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "firstName": {
+                          "$ref": "#/components/schemas/User/properties/firstName"
+                        },
+                        "lastName": {
+                          "$ref": "#/components/schemas/User/properties/lastName"
+                        },
+                        "propic": {
+                          "$ref": "#/components/schemas/User/properties/propic"
+                        },
+                        "codiceFiscale": {
+                          "$ref": "#/components/schemas/User/properties/codiceFiscale"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Document not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Document not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized: you do not have the permission to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete user by ID",
+        "description": "This endpoint allows an admin or the user themselves to delete a user by their ID. It deactivates the user instead of permanently deleting the record.",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the user to delete",
+            "schema": {
+              "type": "string",
+              "example": "6679678d98a282cb36cec53d"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User deleted successfully",
+            "content": {}
+          },
+          "404": {
+            "description": "Document not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Document not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: Cannot delete an admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Forbidden: Cannot delete an admin."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{userID}/activities": {
+      "get": {
+        "summary": "Get user activities by userID",
+        "description": "This endpoint allows an admin to retrieve all activities of a user by their userID.",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "required": true,
+            "description": "ID of the user whose activities are to be retrieved",
+            "schema": {
+              "type": "string",
+              "example": "6644c5ad58e728aeecdb8852"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Page number for pagination",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Number of results per page",
+            "schema": {
+              "type": "integer",
+              "example": 10
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "description": "Field to sort by",
+            "schema": {
+              "type": "string",
+              "example": "-createdAt"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "description": "Fields to include in the response",
+            "schema": {
+              "type": "string",
+              "example": "name,description"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User activities retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "totalDocuments": {
+                      "type": "integer",
+                      "example": 2
+                    },
+                    "results": {
+                      "type": "integer",
+                      "example": 2
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "activities": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "_id": {
+                                "$ref": "#/components/schemas/Activity/properties/_id"
+                              },
+                              "taskName": {
+                                "$ref": "#/components/schemas/Activity/properties/taskName"
+                              },
+                              "taskID": {
+                                "$ref": "#/components/schemas/Activity/properties/taskID"
+                              },
+                              "startTime": {
+                                "$ref": "#/components/schemas/Activity/properties/startTime"
+                              },
+                              "endTime": {
+                                "$ref": "#/components/schemas/Activity/properties/endTime"
+                              },
+                              "notes": {
+                                "$ref": "#/components/schemas/Activity/properties/notes"
+                              },
+                              "userID": {
+                                "$ref": "#/components/schemas/Activity/properties/userID"
+                              },
+                              "isActive": {
+                                "$ref": "#/components/schemas/Activity/properties/isActive"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized: you do not have the permission to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1004,6 +1540,10 @@
         "required": ["firstName", "lastName", "email", "codiceFiscale"]
       },
       "Activity": {
+        "_id": {
+          "type": "string",
+          "example": "667159e266e0e8ce0f9b82ae"
+        },
         "type": "object",
         "properties": {
           "taskName": {
