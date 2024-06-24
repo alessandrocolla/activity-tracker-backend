@@ -622,6 +622,281 @@
           }
         }
       }
+    },
+    "/users/changeStatus/{id}": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Change user status",
+        "description": "This route, accessible only to admins, allows changing the isActive and isAccepted status of a user to true or false. The uri parameter is used to construct the link to be sent via email.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The id of the user to retrieve."
+          },
+          {
+            "name": "uri",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "The URI to build the link to send via email."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "isActive": {
+                    "$ref": "#/components/schemas/User/properties/isActive"
+                  },
+                  "isAccepted": {
+                    "$ref": "#/components/schemas/User/properties/isAccepted"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token sent to mail successfully."
+          },
+          "400": {
+            "description": "Invalid isActive: ."
+          },
+          "401": {
+            "description": "You are not logged in, log in to get access"
+          },
+          "403": {
+            "description": "Unauthorized: you do not have the permission to perform this action"
+          }
+        }
+      }
+    },
+    "/users/getMe": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get personal data",
+        "description": "This route allows users to view all their personal data.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "firstName": {
+                      "$ref": "#/components/schemas/User/properties/firstName"
+                    },
+                    "lastName": {
+                      "$ref": "#/components/schemas/User/properties/lastName"
+                    },
+                    "propic": {
+                      "$ref": "#/components/schemas/User/properties/propic"
+                    },
+                    "codiceFiscale": {
+                      "$ref": "#/components/schemas/User/properties/codiceFiscale"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "You are not logged in, log in to get access"
+          }
+        }
+      }
+    },
+    "/users/updateMe": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update personal data",
+        "description": "This route allows the logged-in user to update their personal data.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "$ref": "#/components/schemas/User/properties/firstName"
+                  },
+                  "lastName": {
+                    "$ref": "#/components/schemas/User/properties/lastName"
+                  },
+                  "propic": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "User's profile picture"
+                  },
+                  "codiceFiscale": {
+                    "$ref": "#/components/schemas/User/properties/codiceFiscale"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request executed successfully"
+          },
+          "400": {
+            "description": "Error occurred while processing the request",
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "example": {
+                    "errors": [
+                      "Invalid input data. You must put a firstName",
+                      "Invalid input data. You must put a lastName",
+                      "Invalid input data. You must put a codiceFiscale (taxCode)"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "You are not logged in, log in to get access"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get all users",
+        "description": "Returns all users available in the database. By default. This endpoint is intended for use by administrators.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "firstName",
+            "in": "query",
+            "type": "string",
+            "description": "Filter users by their first name. The search is case-sensitive."
+          },
+          {
+            "name": "lastName",
+            "in": "query",
+            "type": "string",
+            "description": "Filter users by their last name. The search is case-sensitive."
+          },
+          {
+            "name": "_id",
+            "in": "query",
+            "type": "string",
+            "description": "Filter users by their id. The search is case-sensitive."
+          },
+          {
+            "name": "role",
+            "in": "query",
+            "type": "string",
+            "description": "Filter users by their role. The search is case-sensitive."
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "type": "string",
+            "description": "Sort users"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string",
+            "description": "Limits the number of users"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string",
+            "description": "View the selected page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "$ref": "#/components/schemas/User/properties/_id"
+                    },
+                    "firstName": {
+                      "$ref": "#/components/schemas/User/properties/firstName"
+                    },
+                    "lastName": {
+                      "$ref": "#/components/schemas/User/properties/lastName"
+                    },
+                    "email": {
+                      "$ref": "#/components/schemas/User/properties/email"
+                    },
+                    "propic": {
+                      "$ref": "#/components/schemas/User/properties/propic"
+                    },
+                    "codiceFiscale": {
+                      "$ref": "#/components/schemas/User/properties/codiceFiscale"
+                    },
+                    "isAccepted": {
+                      "$ref": "#/components/schemas/User/properties/isAccepted"
+                    },
+                    "isActive": {
+                      "$ref": "#/components/schemas/User/properties/isActive"
+                    },
+                    "creationDate": {
+                      "$ref": "#/components/schemas/User/properties/creationDate"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "You are not logged in, log in to get access"
+          },
+          "403": {
+            "description": "Unauthorized: you do not have the permission to perform this action"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -703,6 +978,7 @@
           },
           "propic": {
             "type": "string",
+            "format": "binary",
             "default": "default.png"
           },
           "codiceFiscale": {
