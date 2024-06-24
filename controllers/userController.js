@@ -7,6 +7,7 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const Email = require("../utils/email");
 const { getAll, getOne, updateOne, deleteOne } = require("./handlerFactory");
+const APIFeatures = require("../utils/apiFeatures");
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -154,10 +155,20 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 });
 
 exports.getUserActivities = catchAsync(async (req, res, next) => {
-  const activities = await Activity.find({ userID: req.params.userID });
+  const filter = { userID: req.params.userID };
+
+  const totalDocuments = await Activity.countDocuments(filter);
+
+  const features = new APIFeatures(Activity.find(filter), req.query, "Activity")
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
+  const activities = await features.query;
 
   res.status(200).json({
     status: "success",
+    totalDocuments,
     results: activities.length,
     data: {
       activities,
