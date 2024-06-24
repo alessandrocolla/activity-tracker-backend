@@ -254,6 +254,185 @@
           }
         }
       }
+    },
+    "/users/forgotPassword": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Request a password reset token",
+        "description": "Returns the user a token to change the forgotten password. The uri is used to build the link to be sent via email.",
+        "security": [],
+        "parameters": [
+          {
+            "name": "uri",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "The URI to build the link to send via email."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "$ref": "#/components/schemas/User/properties/email"
+                  }
+                },
+                "required": ["email"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token sent to mail successfully"
+          },
+          "403": {
+            "description": "User is not active or accepted, please contact administration for support"
+          },
+          "404": {
+            "description": "No user found with email address"
+          }
+        }
+      }
+    },
+    "/users/resetPassword/{token}": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Reset user password",
+        "description": "Allows a user to reset their password by providing the token obtained from the password reset email. The new password and password confirmation should be included in the request body.",
+        "security": [],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The token obtained from the password reset email"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "$ref": "#/components/schemas/User/properties/password"
+                  },
+                  "passwordConfirm": {
+                    "$ref": "#/components/schemas/User/properties/passwordConfirm"
+                  }
+                },
+                "required": ["password", "passwordConfirm"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request executed successfully"
+          },
+          "400": {
+            "description": "Error occurred while processing the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "example": {
+                    "errors": [
+                      "Token is invalid or expired",
+                      "Invalid input data. Passwords are not the same!",
+                      "Invalid input data. Path `password` (`Pass`) is shorter than the minimum allowed length (8).",
+                      "Invalid input data. Password must be at least 8 characters long and must contain: at least one lowercase character, at least one uppercase character, at least one number and at least one symbol"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No user found with email address"
+          }
+        }
+      }
+    },
+    "/users/updateMyPassword": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update current user's password",
+        "description": "Allows an authenticated user to update their password. The request body must include the current password, the new password, and the confirmation of the new password.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "passwordCurrent": {
+                    "type": "string",
+                    "description": "The current password of the user",
+                    "example": "Pass1234!"
+                  },
+                  "password": {
+                    "$ref": "#/components/schemas/User/properties/password"
+                  },
+                  "passwordConfirm": {
+                    "$ref": "#/components/schemas/User/properties/passwordConfirm"
+                  }
+                },
+                "required": ["passwordCurrent", "password", "passwordConfirm"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request executed successfully"
+          },
+          "400": {
+            "description": "Invalid input data. Passwords are not the same!"
+          },
+          "401": {
+            "description": "Error occurred while processing the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "example": {
+                    "errors": ["You are not logged in, log in to get access", "Your current password is wrong"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
