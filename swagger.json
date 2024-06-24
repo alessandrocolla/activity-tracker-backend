@@ -255,6 +255,195 @@
         }
       }
     },
+    "/Users/signup": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Register a new user",
+        "description": "This endpoint allows a new user to create an account by providing their personal information and credentials. The server will validate the input, create a new user record, and return the details of the newly created user.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "$ref": "#/components/schemas/User/properties/firstName"
+                  },
+                  "lastName": {
+                    "$ref": "#/components/schemas/User/properties/lastName"
+                  },
+                  "email": {
+                    "$ref": "#/components/schemas/User/properties/email"
+                  },
+                  "codiceFiscale": {
+                    "$ref": "#/components/schemas/User/properties/codiceFiscale"
+                  }
+                },
+                "required": ["firstName", "lastName", "email", "codiceFiscale"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "role": {
+                          "$ref": "#/components/schemas/User/properties/role"
+                        },
+                        "_id": {
+                          "$ref": "#/components/schemas/User/properties/_id"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error occurred while processing the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "example": {
+                    "errors": [
+                      "This field value already exists: \"mario.rossi@top-network.it\". Please choose a different value!",
+                      "Invalid input data. Please provide a valid email",
+                      "Invalid input data. Path `codiceFiscale` (`RSSMRA85M01H501`) is shorter than the minimum allowed length (16).",
+                      "Invalid input data. Path `codiceFiscale` (`RSSMRA85M01H501AA`) is longer than the maximum allowed length (16).",
+                      "Invalid input data. RSSMRA85MAAHAAAA is not a valid codiceFiscale (tax code)!",
+                      "Invalid input data. You must put a firstName",
+                      "Invalid input data. You must put a lastName",
+                      "Invalid input data. You must put an email"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Users/login": {
+      "post": {
+        "summary": "User login and authentication",
+        "description": "This endpoint allows users to log in to the application by providing their credentials. It authenticates the user and returns a token that can be used for accessing protected resources.",
+        "tags": ["Users"],
+        "requestBody": {
+          "description": "User credentials for login",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "format": "string",
+                    "example": "success"
+                  },
+                  "token": {
+                    "format": "token",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NGI1NmY4NzQzZGIxNDg5YzFmOGRkMiIsImlhdCI6MTcxOTIzMzUxMywiZXhwIjoxNzE5MjM3MTEzfQ.Hf9pfOKNfFe9arYMxUfYrvTiIEKkfewXmK98PcQHO9I"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "role": {
+                        "$ref": "#/components/schemas/User/properties/role"
+                      },
+                      "_id": {
+                        "$ref": "#/components/schemas/User/properties/_id"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User authenticated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Please provide email and password"
+          },
+          "401": {
+            "description": "Invalid email or password"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/users/logout": {
+      "get": {
+        "summary": "Log out the current user",
+        "description": "This endpoint logs out the current user by clearing the authentication cookie.",
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "User logged out successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/users/forgotPassword": {
       "post": {
         "tags": ["Users"],
@@ -465,6 +654,10 @@
       "User": {
         "type": "object",
         "properties": {
+          "_id": {
+            "type": "string",
+            "example": "66793f77d94a25d7b24f1186"
+          },
           "firstName": {
             "type": "string",
             "example": "Mario"
@@ -486,7 +679,8 @@
             "minLength": 8
           },
           "passwordConfirm": {
-            "type": "string"
+            "type": "string",
+            "example": "Password1234."
           },
           "role": {
             "type": "string",
