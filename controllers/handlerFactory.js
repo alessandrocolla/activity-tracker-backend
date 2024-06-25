@@ -8,6 +8,7 @@ exports.getAll = (Model) =>
   catchAsync(async (req, res, next) => {
     let filter = {};
     if (req.params.startTime) filter = { startTime: req.params.startTime };
+    if (req.params.endTime) filter = { endTime: req.params.endTime };
     if (req.params.taskName) filter = { task: req.params.taskName };
     if (req.params.firstName) filter = { firstName: req.params.firstName };
     if (req.params.lastName) filter = { lastName: req.params.lastName };
