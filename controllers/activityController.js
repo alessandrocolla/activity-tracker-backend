@@ -47,7 +47,11 @@ exports.personalActivities = catchAsync(async (req, res, next) => {
 
   const totalDocuments = await Activity.countDocuments(filter);
 
-  const features = new APIFeatures(Activity.find(filter), req.query, "Activity").filter().sort().limitFields().paginate();
+  const features = new APIFeatures(Activity.find(filter), req.query, "Activity")
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
 
   const userActivities = await features.query;
 
