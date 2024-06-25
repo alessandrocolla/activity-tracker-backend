@@ -1409,6 +1409,883 @@
           }
         }
       }
+    },
+    "/activities": {
+      "get": {
+        "summary": "Retrieve all activities",
+        "description": "Returns all available activities in the database. This endpoint is accessible only by the admin.",
+        "tags": ["Activities"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "firstName",
+            "in": "query",
+            "type": "string",
+            "description": "Filter the activity by the user's first name. The search is case-sensitive."
+          },
+          {
+            "name": "lastName",
+            "in": "query",
+            "type": "string",
+            "description": "Filter the activity by the user's last name. The search is case-sensitive."
+          },
+          {
+            "name": "taskName",
+            "in": "query",
+            "type": "string",
+            "description": "Filter the activity by the task name. The search is case-sensitive."
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter the activity by a specific start date. The format must be yyyy-MM-ddTHH:mm."
+          },
+          {
+            "name": "startTime[gte]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Finds all activities with a start date greater than or equal to the specified one"
+          },
+          {
+            "name": "startTime[gt]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Finds all activities with a start date greater than the specified one"
+          },
+          {
+            "name": "startTime[lte]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Finds all activities with a start date less than or equal to the specified one"
+          },
+          {
+            "name": "startTime[lt]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Finds all activities with a start date less than the specified one"
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter the activity by the end time"
+          },
+          {
+            "name": "endTime[gte]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter the activity by the end time"
+          },
+          {
+            "name": "endTime[gt]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter the activity by the end time"
+          },
+          {
+            "name": "endTime[lte]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Finds all activities with a finish date less than or equal to the specified date"
+          },
+          {
+            "name": "endTime[lt]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Finds all activities with a finish date less than the specified date"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "type": "string",
+            "description": "Sort sctivities"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string",
+            "description": "Limits the number of activities"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string",
+            "description": "View the selected page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User activities retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "totalDocuments": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "results": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "activities": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "_id": {
+                                "$ref": "#/components/schemas/Activity/properties/_id"
+                              },
+                              "taskName": {
+                                "$ref": "#/components/schemas/Activity/properties/taskName"
+                              },
+                              "taskID": {
+                                "$ref": "#/components/schemas/Activity/properties/taskID"
+                              },
+                              "startTime": {
+                                "$ref": "#/components/schemas/Activity/properties/startTime"
+                              },
+                              "endTime": {
+                                "$ref": "#/components/schemas/Activity/properties/endTime"
+                              },
+                              "notes": {
+                                "$ref": "#/components/schemas/Activity/properties/notes"
+                              },
+                              "userID": {
+                                "$ref": "#/components/schemas/Activity/properties/userID"
+                              },
+                              "isActive": {
+                                "$ref": "#/components/schemas/Activity/properties/isActive"
+                              },
+                              "hours": {
+                                "type": "number",
+                                "multipleOf": 0.1,
+                                "example": 0.2
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not logged in, log in to get access"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized: you do not have the permission to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new activity",
+        "description": "This endpoint adds a new activity to the database.\n- **Admins**: Can add an activity on behalf of a specific user by including the `userID` in the request body.\n- **Users**: The `userID` is dynamically obtained from the logged-in user's credentials.",
+        "tags": ["Activities"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "taskName": {
+                    "$ref": "#/components/schemas/Activity/properties/taskName"
+                  },
+                  "taskID": {
+                    "$ref": "#/components/schemas/Activity/properties/taskID"
+                  },
+                  "startTime": {
+                    "$ref": "#/components/schemas/Activity/properties/startTime"
+                  },
+                  "endTime": {
+                    "$ref": "#/components/schemas/Activity/properties/endTime"
+                  },
+                  "notes": {
+                    "$ref": "#/components/schemas/Activity/properties/notes"
+                  },
+                  "userID": {
+                    "$ref": "#/components/schemas/Activity/properties/userID"
+                  }
+                },
+                "required": ["email"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Activity successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "activity": {
+                          "type": "object",
+                          "properties": {
+                            "taskName": {
+                              "$ref": "#/components/schemas/Activity/properties/taskName"
+                            },
+                            "taskID": {
+                              "$ref": "#/components/schemas/Activity/properties/taskID"
+                            },
+                            "startTime": {
+                              "$ref": "#/components/schemas/Activity/properties/startTime"
+                            },
+                            "endTime": {
+                              "$ref": "#/components/schemas/Activity/properties/endTime"
+                            },
+                            "notes": {
+                              "$ref": "#/components/schemas/Activity/properties/notes"
+                            },
+                            "userID": {
+                              "$ref": "#/components/schemas/Activity/properties/userID"
+                            },
+                            "isActive": {
+                              "$ref": "#/components/schemas/Activity/properties/isActive"
+                            },
+                            "_id": {
+                              "$ref": "#/components/schemas/Activity/properties/_id"
+                            },
+                            "hours": {
+                              "type": "number",
+                              "multipleOf": 0.1,
+                              "example": 0.2
+                            },
+                            "id": {
+                              "$ref": "#/components/schemas/Activity/properties/_id"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error occurred while processing the request. Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "array",
+                      "example": [
+                        "An activity must have a task name",
+                        "An activity must have a start time",
+                        "An activity must have an end time",
+                        "An activity must have some notes",
+                        "Notes must have less or equal than 100 characters"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "array",
+                      "example": [
+                        "Forbidden: the activity must be in the current year",
+                        "Forbidden: activity date month must be the current month",
+                        "Forbidden: activity date cannot be in the future",
+                        "The time you entered intersects with the time of another activity you have already created."
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/activities/me": {
+      "get": {
+        "summary": "Retrieve logged-in user's activities",
+        "description": "Returns all activities for the logged-in user. A virtual field calculates the time difference between `startTime` and `endTime` for each activity.",
+        "tags": ["Activities"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "taskName",
+            "in": "query",
+            "type": "string",
+            "description": "Filter the activity by the task name. The search is case-sensitive."
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter the activity by a specific start date. The format must be yyyy-MM-ddTHH:mm."
+          },
+          {
+            "name": "startTime[gte]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Finds all activities with a start date greater than or equal to the specified one"
+          },
+          {
+            "name": "startTime[gt]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Finds all activities with a start date greater than the specified one"
+          },
+          {
+            "name": "startTime[lte]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Finds all activities with a start date less than or equal to the specified one"
+          },
+          {
+            "name": "startTime[lt]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Finds all activities with a start date less than the specified one"
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter the activity by the end time"
+          },
+          {
+            "name": "isActive",
+            "in": "query",
+            "type": "string",
+            "description": "Status of the activity"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "type": "string",
+            "description": "Sort sctivities"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string",
+            "description": "Limits the number of activities"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string",
+            "description": "View the selected page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User activities retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "totalDocuments": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "results": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "userActivities": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "_id": {
+                                "$ref": "#/components/schemas/Activity/properties/_id"
+                              },
+                              "taskName": {
+                                "$ref": "#/components/schemas/Activity/properties/taskName"
+                              },
+                              "taskID": {
+                                "$ref": "#/components/schemas/Activity/properties/taskID"
+                              },
+                              "startTime": {
+                                "$ref": "#/components/schemas/Activity/properties/startTime"
+                              },
+                              "endTime": {
+                                "$ref": "#/components/schemas/Activity/properties/endTime"
+                              },
+                              "notes": {
+                                "$ref": "#/components/schemas/Activity/properties/notes"
+                              },
+                              "userID": {
+                                "$ref": "#/components/schemas/Activity/properties/userID"
+                              },
+                              "isActive": {
+                                "$ref": "#/components/schemas/Activity/properties/isActive"
+                              },
+                              "hours": {
+                                "type": "number",
+                                "multipleOf": 0.1,
+                                "example": 0.2
+                              },
+                              "id": {
+                                "$ref": "#/components/schemas/Activity/properties/_id"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "array",
+                      "example": [
+                        "You are not logged in, log in to get access",
+                        "The token is invalid. Please log in once more!"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/activities/hoursPerActivity": {
+      "get": {
+        "summary": "Retrieve all user activities with durations",
+        "description": "This endpoint returns all activities of all users and is accessible only by an admin. A virtual field calculates the time difference between `startTime` and `endTime` for each activity.",
+        "tags": ["Activities"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "firstName",
+            "in": "query",
+            "type": "string",
+            "description": "Filter the activity by the user's first name. The search is case-sensitive."
+          },
+          {
+            "name": "lastName",
+            "in": "query",
+            "type": "string",
+            "description": "Filter the activity by the user's last name. The search is case-sensitive."
+          },
+          {
+            "name": "taskName",
+            "in": "query",
+            "type": "string",
+            "description": "Filter the activity by the task name. The search is case-sensitive."
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter the activity by a specific start date. The format must be yyyy-MM-ddTHH:mm."
+          },
+          {
+            "name": "startTime[gte]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Finds all activities with a start date greater than or equal to the specified one"
+          },
+          {
+            "name": "startTime[gt]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Finds all activities with a start date greater than the specified one"
+          },
+          {
+            "name": "startTime[lte]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Finds all activities with a start date less than or equal to the specified one"
+          },
+          {
+            "name": "startTime[lt]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Finds all activities with a start date less than the specified one"
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter the activity by the end time"
+          },
+          {
+            "name": "endTime[gte]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter the activity by the end time"
+          },
+          {
+            "name": "endTime[gt]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter the activity by the end time"
+          },
+          {
+            "name": "endTime[lte]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Finds all activities with a finish date less than or equal to the specified date"
+          },
+          {
+            "name": "endTime[lt]",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "description": "Finds all activities with a finish date less than the specified date"
+          },
+          {
+            "name": "isActive",
+            "in": "query",
+            "type": "string",
+            "description": "Status of the activity"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "type": "string",
+            "description": "Sort sctivities"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string",
+            "description": "Limits the number of activities"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string",
+            "description": "View the selected page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User activities retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "totalDocuments": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "results": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "activities": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "_id": {
+                                "$ref": "#/components/schemas/Activity/properties/_id"
+                              },
+                              "taskName": {
+                                "$ref": "#/components/schemas/Activity/properties/taskName"
+                              },
+                              "taskID": {
+                                "$ref": "#/components/schemas/Activity/properties/taskID"
+                              },
+                              "startTime": {
+                                "$ref": "#/components/schemas/Activity/properties/startTime"
+                              },
+                              "endTime": {
+                                "$ref": "#/components/schemas/Activity/properties/endTime"
+                              },
+                              "notes": {
+                                "$ref": "#/components/schemas/Activity/properties/notes"
+                              },
+                              "userID": {
+                                "$ref": "#/components/schemas/Activity/properties/userID"
+                              },
+                              "isActive": {
+                                "$ref": "#/components/schemas/Activity/properties/isActive"
+                              },
+                              "hours": {
+                                "type": "number",
+                                "multipleOf": 0.1,
+                                "example": 0.2
+                              },
+                              "id": {
+                                "$ref": "#/components/schemas/Activity/properties/_id"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not logged in, log in to get access"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized: you do not have the permission to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
