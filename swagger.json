@@ -2286,6 +2286,401 @@
           }
         }
       }
+    },
+    "/activities/{id}": {
+      "get": {
+        "summary": "Get activity by ID",
+        "description": "This endpoint retrieves an activity by its ID.",
+        "tags": ["Activity"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the activity to retrieve",
+            "schema": {
+              "type": "string",
+              "example": "667a841878c50bf2ce9a3e6b"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Activity retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "$ref": "#/components/schemas/Activity/properties/_id"
+                        },
+                        "taskName": {
+                          "$ref": "#/components/schemas/Activity/properties/taskName"
+                        },
+                        "taskID": {
+                          "$ref": "#/components/schemas/Activity/properties/taskID"
+                        },
+                        "startTime": {
+                          "$ref": "#/components/schemas/Activity/properties/startTime"
+                        },
+                        "endTime": {
+                          "$ref": "#/components/schemas/Activity/properties/endTime"
+                        },
+                        "notes": {
+                          "$ref": "#/components/schemas/Activity/properties/notes"
+                        },
+                        "userID": {
+                          "$ref": "#/components/schemas/Activity/properties/userID"
+                        },
+                        "isActive": {
+                          "$ref": "#/components/schemas/Activity/properties/isActive"
+                        },
+                        "hours": {
+                          "type": "integer",
+                          "example": 2
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid _id: 664b56f8743d9c1f8dd2."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You do not have permission to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Document not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No document found with that ID"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update activity by ID",
+        "description": "This endpoint allows an admin or the activity's owner to update an activity's information by its ID. It updates the user document with the provided fields and returns the updated information.",
+        "tags": ["Activity"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the activity to update",
+            "schema": {
+              "type": "string",
+              "example": "667a841878c50bf2ce9a3e6b"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Fields to update for the activity",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "taskName": {
+                    "$ref": "#/components/schemas/Activity/properties/taskName"
+                  },
+                  "taskID": {
+                    "$ref": "#/components/schemas/Activity/properties/taskID"
+                  },
+                  "startTime": {
+                    "$ref": "#/components/schemas/Activity/properties/startTime"
+                  },
+                  "endTime": {
+                    "$ref": "#/components/schemas/Activity/properties/endTime"
+                  },
+                  "notes": {
+                    "$ref": "#/components/schemas/Activity/properties/notes"
+                  },
+                  "userID": {
+                    "$ref": "#/components/schemas/Activity/properties/userID"
+                  },
+                  "isActive": {
+                    "$ref": "#/components/schemas/Activity/properties/isActive"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Activity updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "$ref": "#/components/schemas/Activity/properties/_id"
+                        },
+                        "taskName": {
+                          "$ref": "#/components/schemas/Activity/properties/taskName"
+                        },
+                        "taskID": {
+                          "$ref": "#/components/schemas/Activity/properties/taskID"
+                        },
+                        "startTime": {
+                          "$ref": "#/components/schemas/Activity/properties/startTime"
+                        },
+                        "endTime": {
+                          "$ref": "#/components/schemas/Activity/properties/endTime"
+                        },
+                        "notes": {
+                          "$ref": "#/components/schemas/Activity/properties/notes"
+                        },
+                        "userID": {
+                          "$ref": "#/components/schemas/Activity/properties/userID"
+                        },
+                        "isActive": {
+                          "$ref": "#/components/schemas/Activity/properties/isActive"
+                        },
+                        "hours": {
+                          "type": "integer",
+                          "example": 2
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Document not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Document not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized: you do not have the permission to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete activity by ID",
+        "description": "This endpoint allows an admin or the activity's owner to delete an activity by its ID. It deactivates the activity instead of permanently deleting the record.",
+        "tags": ["Activity"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the activity to delete",
+            "schema": {
+              "type": "string",
+              "example": "667a841878c50bf2ce9a3e6b"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Activity deleted successfully",
+            "content": {}
+          },
+          "404": {
+            "description": "Document not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Document not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You do not have permission to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
