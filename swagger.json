@@ -260,6 +260,7 @@
         "tags": ["Users"],
         "summary": "Register a new user",
         "description": "This endpoint allows a new user to create an account by providing their personal information and credentials. The server will validate the input, create a new user record, and return the details of the newly created user.",
+        "security": [],
         "requestBody": {
           "required": true,
           "content": {
@@ -350,6 +351,7 @@
       "post": {
         "summary": "User login and authentication",
         "description": "This endpoint allows users to log in to the application by providing their credentials. It authenticates the user and returns a token that can be used for accessing protected resources.",
+        "security": [],
         "tags": ["Users"],
         "requestBody": {
           "description": "User credentials for login",
@@ -359,24 +361,11 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "status": {
-                    "format": "string",
-                    "example": "success"
+                  "email": {
+                    "$ref": "#/components/schemas/User/properties/email"
                   },
-                  "token": {
-                    "format": "token",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NGI1NmY4NzQzZGIxNDg5YzFmOGRkMiIsImlhdCI6MTcxOTIzMzUxMywiZXhwIjoxNzE5MjM3MTEzfQ.Hf9pfOKNfFe9arYMxUfYrvTiIEKkfewXmK98PcQHO9I"
-                  },
-                  "data": {
-                    "type": "object",
-                    "properties": {
-                      "role": {
-                        "$ref": "#/components/schemas/User/properties/role"
-                      },
-                      "_id": {
-                        "$ref": "#/components/schemas/User/properties/_id"
-                      }
-                    }
+                  "password": {
+                    "$ref": "#/components/schemas/User/properties/password"
                   }
                 }
               }
@@ -1274,8 +1263,7 @@
             "required": false,
             "description": "Page number for pagination",
             "schema": {
-              "type": "integer",
-              "example": 1
+              "type": "integer"
             }
           },
           {
@@ -1284,8 +1272,7 @@
             "required": false,
             "description": "Number of results per page",
             "schema": {
-              "type": "integer",
-              "example": 10
+              "type": "integer"
             }
           },
           {
@@ -1294,18 +1281,7 @@
             "required": false,
             "description": "Field to sort by",
             "schema": {
-              "type": "string",
-              "example": "-createdAt"
-            }
-          },
-          {
-            "name": "fields",
-            "in": "query",
-            "required": false,
-            "description": "Fields to include in the response",
-            "schema": {
-              "type": "string",
-              "example": "name,description"
+              "type": "string"
             }
           }
         ],
@@ -1540,12 +1516,12 @@
         "required": ["firstName", "lastName", "email", "codiceFiscale"]
       },
       "Activity": {
-        "_id": {
-          "type": "string",
-          "example": "667159e266e0e8ce0f9b82ae"
-        },
         "type": "object",
         "properties": {
+          "_id": {
+            "type": "string",
+            "example": "667159e266e0e8ce0f9b82ae"
+          },
           "taskName": {
             "type": "string",
             "trim": true
