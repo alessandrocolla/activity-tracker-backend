@@ -35,15 +35,19 @@ exports.createActivity = catchAsync(async (req, res, next) => {
 });
 
 exports.personalActivities = catchAsync(async (req, res, next) => {
-  let filter = {};
+  let filter = { userID: req.user.id };
 
+  if (req.query.startTime) {
+    filter.startTime = { $gte: new Date(req.query.startTime.gte) };
+  }
   if (req.query.endTime) {
     const endTime = new Date(req.query.endTime.lte);
     endTime.setHours(23, 59, 59, 999);
+    if (!filter.startTime) filter.startTime = {};
+    filter.endTime = { $lte: endTime };
     req.query.endTime.lte = endTime;
   }
-
-  filter = { userID: req.user.id };
+  if (req.query.taskName) filter.taskName = req.query.taskName;
 
   const totalDocuments = await Activity.countDocuments(filter);
 
