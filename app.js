@@ -17,6 +17,8 @@ const activityRouter = require("./routes/activityRoutes");
 
 const app = express();
 
+app.use("/public", express.static("public"));
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(cors({ origin: true, credentials: true }));

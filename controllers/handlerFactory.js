@@ -48,7 +48,7 @@ exports.getOne = (Model) =>
         data: {
           firstName: document.firstName,
           lastName: document.lastName,
-          propic: document.propic,
+          propic: `${req.protocol}://${req.hostname}:${process.env.PORT}/public/img/users/${document.propic}`,
           codiceFiscale: document.codiceFiscale,
           email: document.email,
         },
