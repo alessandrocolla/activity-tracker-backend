@@ -40,7 +40,10 @@ const deletePhotoFromServer = catchAsync(async (photo) => {
   });
 });
 
-exports.uploadUserPhoto = upload.single("propic");
+exports.uploadUserPhoto = (req, res, next) => {
+  if (!req.file) return next();
+  upload.single("propic");
+};
 
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   if (!req.file) return next();
