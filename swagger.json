@@ -16,7 +16,7 @@
       "get": {
         "tags": ["Tasks"],
         "summary": "Returns all tasks available in the database",
-        "description": "Users can view only active tasks while admins can view all tasks",
+        "description": "**Users** can view only active tasks while **admins** can view all tasks",
         "security": [
           {
             "bearerAuth": []
@@ -34,14 +34,51 @@
             }
           },
           "401": {
-            "description": "You are not logged in, log in to get access"
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not logged in, log in to get access"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error: Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       },
       "post": {
         "tags": ["Tasks"],
         "summary": "This route adds a task to the database",
-        "description": "Only admin can add a task to the database",
+        "description": "Only **admin** can add a task to the database",
         "security": [
           {
             "bearerAuth": []
@@ -69,38 +106,91 @@
             }
           },
           "400": {
-            "description": "Error occurred while processing the request",
+            "description": "Error: Bad Request",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "errors": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
                       "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
+                      "example": [
+                        "Task name already exists",
+                        "Task validation failed: taskName: Please enter the task name",
+                        "Task validation failed: state: State is either: 'To do', 'In progress', 'Done'",
+                        "Task validation failed: progressState: Progress state must be above or equal to 0",
+                        "Task validation failed: progressState: Progress state must be below or equal to 100",
+                        "Task validation failed: progressState: Please enter a number for the progress status"
+                      ]
                     }
-                  },
-                  "example": {
-                    "errors": [
-                      "Task name already exists",
-                      "Task validation failed: taskName: Please enter the task name",
-                      "Task validation failed: state: State is either: 'To do', 'In progress', 'Done'",
-                      "Task validation failed: progressState: Progress state must be above or equal to 0",
-                      "Task validation failed: progressState: Progress state must be below or equal to 100",
-                      "Task validation failed: progressState: Please enter a number for the progress status"
-                    ]
                   }
                 }
               }
             }
           },
           "401": {
-            "description": "You are not logged in, log in to get access"
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not logged in, log in to get access"
+                    }
+                  }
+                }
+              }
+            }
           },
           "403": {
-            "description": "Unauthorized: you do not have the permission to perform this action"
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized: you do not have the permission to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error: Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -109,7 +199,7 @@
       "get": {
         "tags": ["Tasks"],
         "summary": "Returns a task specifying its id",
-        "description": "Both users and admins can view a single task",
+        "description": "Both **users** and **admins** can view a single task",
         "security": [
           {
             "bearerAuth": []
@@ -139,14 +229,51 @@
             }
           },
           "401": {
-            "description": "You are not logged in, log in to get access"
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not logged in, log in to get access"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error: Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       },
       "patch": {
         "tags": ["Tasks"],
         "summary": "Edit the data of a task by specifying its id",
-        "description": "Only the admin can edit a task",
+        "description": "Only the **admin** can edit a task",
         "security": [
           {
             "bearerAuth": []
@@ -186,45 +313,98 @@
             }
           },
           "400": {
-            "description": "Error occurred while processing the request",
+            "description": "Error: Bad Request",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "errors": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
                       "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
+                      "example": [
+                        "This field value already exists: \"Frontend\". Please choose a different value!",
+                        "Task validation failed: taskName: Please enter the task name",
+                        "Task validation failed: state: State is either: 'To do', 'In progress', 'Done'",
+                        "Task validation failed: progressState: Progress state must be above or equal to 0",
+                        "Task validation failed: progressState: Progress state must be below or equal to 100",
+                        "Task validation failed: progressState: Please enter a number for the progress status"
+                      ]
                     }
-                  },
-                  "example": {
-                    "errors": [
-                      "This field value already exists: \"Frontend\". Please choose a different value!",
-                      "Task validation failed: taskName: Please enter the task name",
-                      "Task validation failed: state: State is either: 'To do', 'In progress', 'Done'",
-                      "Task validation failed: progressState: Progress state must be above or equal to 0",
-                      "Task validation failed: progressState: Progress state must be below or equal to 100",
-                      "Task validation failed: progressState: Please enter a number for the progress status"
-                    ]
                   }
                 }
               }
             }
           },
           "401": {
-            "description": "You are not logged in, log in to get access"
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not logged in, log in to get access"
+                    }
+                  }
+                }
+              }
+            }
           },
           "403": {
-            "description": "Unauthorized: you do not have the permission to perform this action"
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized: you do not have the permission to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error: Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       },
       "delete": {
         "tags": ["Tasks"],
         "summary": "Delete a task by specifying its id",
-        "description": "Only the admin can delete a task",
+        "description": "Only the **admin** can delete a task",
         "security": [
           {
             "bearerAuth": []
@@ -247,19 +427,73 @@
             "description": "Request executed successfully"
           },
           "401": {
-            "description": "You are not logged in, log in to get access"
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not logged in, log in to get access"
+                    }
+                  }
+                }
+              }
+            }
           },
           "403": {
-            "description": "Unauthorized: you do not have the permission to perform this action"
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized: you do not have the permission to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error: Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "/Users/signup": {
+    "/users/signup": {
       "post": {
         "tags": ["Users"],
         "summary": "Register a new user",
-        "description": "This endpoint allows a new user to create an account by providing their personal information and credentials. The server will validate the input, create a new user record, and return the details of the newly created user.",
+        "description": "This endpoint allows a **new user** to create an account by providing their personal information and credentials. The server will validate the input, create a new user record, and return the details of the newly created user.",
         "security": [],
         "requestBody": {
           "required": true,
@@ -315,30 +549,49 @@
             }
           },
           "400": {
-            "description": "Error occurred while processing the request",
+            "description": "Error: Bad Request",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "errors": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
                       "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
+                      "example": [
+                        "This field value already exists: \"mario.rossi@top-network.it\". Please choose a different value!",
+                        "Invalid input data. Please provide a valid email",
+                        "Invalid input data. Path `codiceFiscale` (`RSSMRA85M01H501`) is shorter than the minimum allowed length (16).",
+                        "Invalid input data. Path `codiceFiscale` (`RSSMRA85M01H501AA`) is longer than the maximum allowed length (16).",
+                        "Invalid input data. RSSMRA85MAAHAAAA is not a valid codiceFiscale (tax code)!",
+                        "Invalid input data. You must put a firstName",
+                        "Invalid input data. You must put a lastName",
+                        "Invalid input data. You must put an email"
+                      ]
                     }
-                  },
-                  "example": {
-                    "errors": [
-                      "This field value already exists: \"mario.rossi@top-network.it\". Please choose a different value!",
-                      "Invalid input data. Please provide a valid email",
-                      "Invalid input data. Path `codiceFiscale` (`RSSMRA85M01H501`) is shorter than the minimum allowed length (16).",
-                      "Invalid input data. Path `codiceFiscale` (`RSSMRA85M01H501AA`) is longer than the maximum allowed length (16).",
-                      "Invalid input data. RSSMRA85MAAHAAAA is not a valid codiceFiscale (tax code)!",
-                      "Invalid input data. You must put a firstName",
-                      "Invalid input data. You must put a lastName",
-                      "Invalid input data. You must put an email"
-                    ]
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error: Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
                   }
                 }
               }
@@ -347,10 +600,10 @@
         }
       }
     },
-    "/Users/login": {
+    "/users/login": {
       "post": {
         "summary": "User login and authentication",
-        "description": "This endpoint allows users to log in to the application by providing their credentials. It authenticates the user and returns a token that can be used for accessing protected resources.",
+        "description": "This endpoint allows **users** to log in to the application by providing their credentials. It authenticates the user and returns a **token** that can be used for accessing protected resources.",
         "security": [],
         "tags": ["Users"],
         "requestBody": {
@@ -394,13 +647,64 @@
             }
           },
           "400": {
-            "description": "Please provide email and password"
+            "description": "Error: Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Please provide email and password"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "Invalid email or password"
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Incorrect email or password"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal server error"
+            "description": "Error: Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -408,7 +712,7 @@
     "/users/logout": {
       "get": {
         "summary": "Log out the current user",
-        "description": "This endpoint logs out the current user by clearing the authentication cookie.",
+        "description": "This endpoint logs out the current **user** by clearing the authentication cookie.",
         "tags": ["Users"],
         "responses": {
           "200": {
@@ -428,7 +732,24 @@
             }
           },
           "500": {
-            "description": "Internal server error"
+            "description": "Error: Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -437,7 +758,7 @@
       "post": {
         "tags": ["Users"],
         "summary": "Request a password reset token",
-        "description": "Returns the user a token to change the forgotten password. The uri is used to build the link to be sent via email.",
+        "description": "Returns the **user** a **token** to change the forgotten password. The **uri** is used to build the link to be sent via email.",
         "security": [],
         "parameters": [
           {
@@ -466,13 +787,84 @@
         },
         "responses": {
           "200": {
-            "description": "Token sent to mail successfully"
+            "description": "Token sent to mail successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token sent to mail successfully"
+                    }
+                  }
+                }
+              }
+            }
           },
           "403": {
-            "description": "User is not active or accepted, please contact administration for support"
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User is not active or accepted, please contact administration for support."
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "No user found with email address"
+            "description": "Error: Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No user found with email address"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error: Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -481,7 +873,7 @@
       "patch": {
         "tags": ["Users"],
         "summary": "Reset user password",
-        "description": "Allows a user to reset their password by providing the token obtained from the password reset email. The new password and password confirmation should be included in the request body.",
+        "description": "Allows a **user** to reset their password by providing the **token** obtained from the password reset email. The new password and password confirmation should be included in the request body.",
         "security": [],
         "parameters": [
           {
@@ -513,36 +905,82 @@
         },
         "responses": {
           "200": {
-            "description": "Request executed successfully"
-          },
-          "400": {
-            "description": "Error occurred while processing the request",
+            "description": "Request executed successfully",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "errors": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjA3OGVjZWFiMzliZTcyZWFhN2FjYiIsImlhdCI6MTcxOTM5NTg2MCwiZXhwIjoxNzE5Mzk5NDYwfQ.2EGvjvUHS2Q_Af-V3JcJl2nPBURnOji8AkQ12DS36zg"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "role": {
+                          "type": "string",
+                          "example": "user"
+                        },
+                        "id": {
+                          "type": "string",
+                          "example": "666078eceab39be72eaa7acb"
+                        }
                       }
                     }
-                  },
-                  "example": {
-                    "errors": [
-                      "Token is invalid or expired",
-                      "Invalid input data. Passwords are not the same!",
-                      "Invalid input data. Path `password` (`Pass`) is shorter than the minimum allowed length (8).",
-                      "Invalid input data. Password must be at least 8 characters long and must contain: at least one lowercase character, at least one uppercase character, at least one number and at least one symbol"
-                    ]
                   }
                 }
               }
             }
           },
-          "404": {
-            "description": "No user found with email address"
+          "400": {
+            "description": "Error: Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "array",
+                      "example": [
+                        "Token is invalid or expired",
+                        "Invalid input data. Passwords are not the same!",
+                        "Invalid input data. Path `password` (`Pass`) is shorter than the minimum allowed length (8).",
+                        "Invalid input data. Password must be at least 8 characters long and must contain: at least one lowercase character, at least one uppercase character, at least one number and at least one symbol"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -551,7 +989,7 @@
       "patch": {
         "tags": ["Users"],
         "summary": "Update current user's password",
-        "description": "Allows an authenticated user to update their password. The request body must include the current password, the new password, and the confirmation of the new password.",
+        "description": "Allows an **authenticated user** to update their password. The request body must include the current password, the new password, and the confirmation of the new password.",
         "security": [
           {
             "bearerAuth": []
@@ -583,27 +1021,94 @@
         },
         "responses": {
           "200": {
-            "description": "Request executed successfully"
-          },
-          "400": {
-            "description": "Invalid input data. Passwords are not the same!"
-          },
-          "401": {
-            "description": "Error occurred while processing the request",
+            "description": "Request executed successfully",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "errors": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjA3OGVjZWFiMzliZTcyZWFhN2FjYiIsImlhdCI6MTcxOTM5NTg2MCwiZXhwIjoxNzE5Mzk5NDYwfQ.2EGvjvUHS2Q_Af-V3JcJl2nPBURnOji8AkQ12DS36zg"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "role": {
+                          "$ref": "#/components/schemas/User/properties/role"
+                        },
+                        "id": {
+                          "$ref": "#/components/schemas/User/properties/_id"
+                        }
                       }
                     }
-                  },
-                  "example": {
-                    "errors": ["You are not logged in, log in to get access", "Your current password is wrong"]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error: Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid input data. Passwords are not the same!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "array",
+                      "example": [
+                        "You are not logged in, log in to get access",
+                        "The token is invalid. Please log in once more!"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error: Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
                   }
                 }
               }
@@ -616,7 +1121,7 @@
       "patch": {
         "tags": ["Users"],
         "summary": "Change user status",
-        "description": "This route, accessible only to admins, allows changing the isActive and isAccepted status of a user to true or false. The uri parameter is used to construct the link to be sent via email.",
+        "description": "This route, accessible only to **admins**, allows changing the `isActive` and `isAccepted` status of a user to true or false. The **uri** parameter is used to construct the link to be sent via email.",
         "security": [
           {
             "bearerAuth": []
@@ -658,16 +1163,140 @@
         },
         "responses": {
           "200": {
-            "description": "Token sent to mail successfully."
+            "description": "Request executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "_id": {
+                              "$ref": "#/components/schemas/User/properties/_id"
+                            },
+                            "firstName": {
+                              "$ref": "#/components/schemas/User/properties/firstName"
+                            },
+                            "lastName": {
+                              "$ref": "#/components/schemas/User/properties/lastName"
+                            },
+                            "email": {
+                              "$ref": "#/components/schemas/User/properties/email"
+                            },
+                            "role": {
+                              "$ref": "#/components/schemas/User/properties/role"
+                            },
+                            "propic": {
+                              "$ref": "#/components/schemas/User/properties/propic"
+                            },
+                            "codiceFiscale": {
+                              "$ref": "#/components/schemas/User/properties/codiceFiscale"
+                            },
+                            "isAccepted": {
+                              "$ref": "#/components/schemas/User/properties/isAccepted"
+                            },
+                            "isActive": {
+                              "$ref": "#/components/schemas/User/properties/isActive"
+                            },
+                            "creationDate": {
+                              "$ref": "#/components/schemas/User/properties/creationDate"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid isActive: ."
+            "description": "Error: Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "array",
+                      "example": ["Invalid isActive: ..", "Invalid isAccepted: ciao."]
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "You are not logged in, log in to get access"
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not logged in, log in to get access"
+                    }
+                  }
+                }
+              }
+            }
           },
           "403": {
-            "description": "Unauthorized: you do not have the permission to perform this action"
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized: you do not have the permission to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error: Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -676,7 +1305,7 @@
       "get": {
         "tags": ["Users"],
         "summary": "Get personal data",
-        "description": "This route allows users to view all their personal data.",
+        "description": "This route allows **users** to view all their personal data.",
         "security": [
           {
             "bearerAuth": []
@@ -708,7 +1337,44 @@
             }
           },
           "401": {
-            "description": "You are not logged in, log in to get access"
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not logged in, log in to get access"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error: Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -717,7 +1383,7 @@
       "patch": {
         "tags": ["Users"],
         "summary": "Update personal data",
-        "description": "This route allows the logged-in user to update their personal data.",
+        "description": "This route allows the **logged-in user** to update their personal data.",
         "security": [
           {
             "bearerAuth": []
@@ -751,35 +1417,132 @@
         },
         "responses": {
           "200": {
-            "description": "Request executed successfully"
-          },
-          "400": {
-            "description": "Error occurred while processing the request",
+            "description": "Request executed successfully",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "errors": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Data updated successfully."
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "updatedUser": {
+                          "type": "object",
+                          "properties": {
+                            "_id": {
+                              "$ref": "#/components/schemas/User/properties/_id"
+                            },
+                            "firstName": {
+                              "$ref": "#/components/schemas/User/properties/firstName"
+                            },
+                            "lastName": {
+                              "$ref": "#/components/schemas/User/properties/lastName"
+                            },
+                            "email": {
+                              "$ref": "#/components/schemas/User/properties/email"
+                            },
+                            "role": {
+                              "$ref": "#/components/schemas/User/properties/role"
+                            },
+                            "propic": {
+                              "$ref": "#/components/schemas/User/properties/propic"
+                            },
+                            "codiceFiscale": {
+                              "$ref": "#/components/schemas/User/properties/codiceFiscale"
+                            },
+                            "isAccepted": {
+                              "$ref": "#/components/schemas/User/properties/isAccepted"
+                            },
+                            "isactive": {
+                              "$ref": "#/components/schemas/User/properties/isActive"
+                            },
+                            "creationDate": {
+                              "$ref": "#/components/schemas/User/properties/creationDate"
+                            },
+                            "passwordChangedAt": {
+                              "$ref": "#/components/schemas/User/properties/passwordChangedAt"
+                            }
+                          }
+                        }
                       }
                     }
-                  },
-                  "example": {
-                    "errors": [
-                      "Invalid input data. You must put a firstName",
-                      "Invalid input data. You must put a lastName",
-                      "Invalid input data. You must put a codiceFiscale (taxCode)"
-                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error: Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "array",
+                      "example": [
+                        "Invalid input data. You must put a firstName",
+                        "Invalid input data. You must put a lastName",
+                        "Invalid input data. You must put a codiceFiscale (taxCode)",
+                        "This field value already exists: \"RSSMRA85M01H501Z\". Please choose a different value!"
+                      ]
+                    }
                   }
                 }
               }
             }
           },
           "401": {
-            "description": "You are not logged in, log in to get access"
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not logged in, log in to get access"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error: Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -788,7 +1551,7 @@
       "get": {
         "tags": ["Users"],
         "summary": "Get all users",
-        "description": "Returns all users available in the database. By default. This endpoint is intended for use by administrators.",
+        "description": "Returns all users available in the database. By default this endpoint is intended for use by **administrators**.",
         "security": [
           {
             "bearerAuth": []
@@ -879,10 +1642,64 @@
             }
           },
           "401": {
-            "description": "You are not logged in, log in to get access"
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not logged in, log in to get access"
+                    }
+                  }
+                }
+              }
+            }
           },
           "403": {
-            "description": "Unauthorized: you do not have the permission to perform this action"
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized: you do not have the permission to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error: Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -890,7 +1707,7 @@
     "/users/{id}": {
       "get": {
         "summary": "Get user by ID",
-        "description": "This endpoint retrieves a user by their ID. It returns the user's first name, last name, profile picture, and codice fiscale. This route is restricted to admins and to the owner of the retrieved ID.",
+        "description": "This endpoint retrieves a user by their ID. It returns the user's first name, last name, profile picture, and codice fiscale. This route is restricted to **admins** and to the owner of the retrieved ID.",
         "tags": ["Users"],
         "parameters": [
           {
@@ -939,7 +1756,7 @@
             }
           },
           "400": {
-            "description": "Bad request",
+            "description": "Error: Bad request",
             "content": {
               "application/json": {
                 "schema": {
@@ -959,7 +1776,7 @@
             }
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Error: Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -971,7 +1788,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "You do not have permission to perform this action"
+                      "example": "Unauthorized: you do not have the permission to perform this action"
                     }
                   }
                 }
@@ -979,7 +1796,7 @@
             }
           },
           "404": {
-            "description": "Document not found",
+            "description": "Error: Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -999,7 +1816,7 @@
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": "Error: Internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1022,7 +1839,7 @@
       },
       "patch": {
         "summary": "Update user by ID",
-        "description": "This endpoint allows an admin to update a user's information by their ID. It updates the user document with the provided fields and returns the updated information.",
+        "description": "This endpoint allows an **admin** to update a user's information by their ID. It updates the user document with the provided fields and returns the updated information.",
         "tags": ["Users"],
         "parameters": [
           {
@@ -1095,28 +1912,8 @@
               }
             }
           },
-          "404": {
-            "description": "Document not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "fail"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Document not found."
-                    }
-                  }
-                }
-              }
-            }
-          },
           "403": {
-            "description": "Forbidden",
+            "description": "Error: Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -1135,8 +1932,28 @@
               }
             }
           },
+          "404": {
+            "description": "Error: Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Document not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
           "500": {
-            "description": "Internal server error",
+            "description": "Error: Internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1159,7 +1976,7 @@
       },
       "delete": {
         "summary": "Delete user by ID",
-        "description": "This endpoint allows an admin or the user themselves to delete a user by their ID. It deactivates the user instead of permanently deleting the record.",
+        "description": "This endpoint allows an **admin** or the **user** themselves to delete a user by their ID. It deactivates the user instead of permanently deleting the record.",
         "tags": ["Users"],
         "parameters": [
           {
@@ -1175,31 +1992,10 @@
         ],
         "responses": {
           "204": {
-            "description": "User deleted successfully",
-            "content": {}
-          },
-          "404": {
-            "description": "Document not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "fail"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Document not found."
-                    }
-                  }
-                }
-              }
-            }
+            "description": "User deleted successfully"
           },
           "403": {
-            "description": "Forbidden: Cannot delete an admin",
+            "description": "Error: Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -1218,8 +2014,28 @@
               }
             }
           },
+          "404": {
+            "description": "Error: Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Document not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
           "500": {
-            "description": "Internal server error",
+            "description": "Error: Internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1244,7 +2060,7 @@
     "/users/{userID}/activities": {
       "get": {
         "summary": "Get user activities by userID",
-        "description": "This endpoint allows an admin to retrieve all activities of a user by their userID.",
+        "description": "This endpoint allows an **admin** to retrieve all activities of a user by their userID.",
         "tags": ["Users"],
         "parameters": [
           {
@@ -1348,7 +2164,7 @@
             }
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Error: Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -1368,7 +2184,7 @@
             }
           },
           "404": {
-            "description": "User not found",
+            "description": "Error: Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1388,7 +2204,7 @@
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": "Error: Internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1413,7 +2229,7 @@
     "/activities": {
       "get": {
         "summary": "Retrieve all activities",
-        "description": "Returns all available activities in the database. This endpoint is accessible only by the admin.",
+        "description": "Returns all available activities in the database. This endpoint is accessible only by the **admin**.",
         "tags": ["Activities"],
         "security": [
           {
@@ -1596,7 +2412,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "Error: Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
@@ -1616,7 +2432,7 @@
             }
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Error: Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -1636,7 +2452,7 @@
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": "Error: Internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1757,7 +2573,7 @@
             }
           },
           "400": {
-            "description": "Error occurred while processing the request. Bad Request",
+            "description": "Error: Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -1783,7 +2599,7 @@
             }
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Error: Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -1808,7 +2624,7 @@
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": "Error: Internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1833,7 +2649,7 @@
     "/activities/me": {
       "get": {
         "summary": "Retrieve logged-in user's activities",
-        "description": "Returns all activities for the logged-in user. A virtual field calculates the time difference between `startTime` and `endTime` for each activity.",
+        "description": "Returns all activities for the **logged-in user**. A virtual field calculates the time difference between `startTime` and `endTime` for each activity.",
         "tags": ["Activities"],
         "security": [
           {
@@ -1985,7 +2801,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "Error: Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
@@ -2008,7 +2824,7 @@
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": "Erros: Internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -2033,7 +2849,7 @@
     "/activities/hoursPerActivity": {
       "get": {
         "summary": "Retrieve all user activities with durations",
-        "description": "This endpoint returns all activities of all users and is accessible only by an admin. A virtual field calculates the time difference between `startTime` and `endTime` for each activity.",
+        "description": "This endpoint returns all activities of all users and is accessible only by an **admin**. A virtual field calculates the time difference between `startTime` and `endTime` for each activity.",
         "tags": ["Activities"],
         "security": [
           {
@@ -2225,7 +3041,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "Error: Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
@@ -2245,7 +3061,7 @@
             }
           },
           "403": {
-            "description": "Unauthorized",
+            "description": "Error: Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -2265,7 +3081,7 @@
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": "Error: Internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -2291,7 +3107,7 @@
       "get": {
         "summary": "Get activity by ID",
         "description": "This endpoint retrieves an activity by its ID.",
-        "tags": ["Activity"],
+        "tags": ["Activities"],
         "parameters": [
           {
             "name": "id",
@@ -2355,7 +3171,7 @@
             }
           },
           "400": {
-            "description": "Bad request",
+            "description": "Error: Bad request",
             "content": {
               "application/json": {
                 "schema": {
@@ -2375,7 +3191,7 @@
             }
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Error: Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -2387,7 +3203,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "You do not have permission to perform this action"
+                      "example": "Unauthorized: you do not have the permission to perform this action"
                     }
                   }
                 }
@@ -2395,7 +3211,7 @@
             }
           },
           "404": {
-            "description": "Document not found",
+            "description": "Error: Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -2415,7 +3231,7 @@
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": "Error: Internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -2438,8 +3254,8 @@
       },
       "patch": {
         "summary": "Update activity by ID",
-        "description": "This endpoint allows an admin or the activity's owner to update an activity's information by its ID. It updates the user document with the provided fields and returns the updated information.",
-        "tags": ["Activity"],
+        "description": "This endpoint allows an **admin** or the **activity's owner** to update an activity's information by its ID. It updates the user document with the provided fields and returns the updated information.",
+        "tags": ["Activities"],
         "parameters": [
           {
             "name": "id",
@@ -2536,28 +3352,8 @@
               }
             }
           },
-          "404": {
-            "description": "Document not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "fail"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Document not found."
-                    }
-                  }
-                }
-              }
-            }
-          },
           "403": {
-            "description": "Forbidden",
+            "description": "Error: Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -2576,8 +3372,28 @@
               }
             }
           },
+          "404": {
+            "description": "Error: Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Document not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
           "500": {
-            "description": "Internal server error",
+            "description": "Error: Internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -2600,8 +3416,8 @@
       },
       "delete": {
         "summary": "Delete activity by ID",
-        "description": "This endpoint allows an admin or the activity's owner to delete an activity by its ID. It deactivates the activity instead of permanently deleting the record.",
-        "tags": ["Activity"],
+        "description": "This endpoint allows an **admin** or the **activity's owner** to delete an activity by its ID. It deactivates the activity instead of permanently deleting the record.",
+        "tags": ["Activities"],
         "parameters": [
           {
             "name": "id",
@@ -2616,11 +3432,30 @@
         ],
         "responses": {
           "204": {
-            "description": "Activity deleted successfully",
-            "content": {}
+            "description": "Activity deleted successfully"
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized: you do not have the permission to perform this action"
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Document not found",
+            "description": "Error: Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -2639,28 +3474,8 @@
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "fail"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "You do not have permission to perform this action"
-                    }
-                  }
-                }
-              }
-            }
-          },
           "500": {
-            "description": "Internal server error",
+            "description": "Error: Internal server error",
             "content": {
               "application/json": {
                 "schema": {
