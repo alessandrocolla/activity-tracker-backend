@@ -158,7 +158,12 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 });
 
 exports.getUserActivities = catchAsync(async (req, res, next) => {
+  if (req.params.isActive) filter = { isActive: req.params.isActive };
   const filter = { userID: req.params.userID };
+
+  const user = await User.findById(req.params.userID);
+
+  if (!user) return next(new AppError("User not found.", 404));
 
   const totalDocuments = await Activity.countDocuments(filter);
 
