@@ -12,6 +12,7 @@ exports.getAll = (Model) =>
     if (req.params.taskName) filter = { task: req.params.taskName };
     if (req.params.firstName) filter = { firstName: req.params.firstName };
     if (req.params.lastName) filter = { lastName: req.params.lastName };
+    if (req.params.isAccepted) filter = { lastName: req.params.isAccepted };
     if (req.params._id) filter = { _id: req.params._id };
     if (req.user.role !== "admin") filter = { isActive: true };
 

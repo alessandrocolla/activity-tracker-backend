@@ -1583,6 +1583,12 @@
             "description": "Filter users by their role. The search is case-sensitive."
           },
           {
+            "name": "isAccepted",
+            "in": "query",
+            "type": "string",
+            "description": "Filter users by `isAccepted` status. The search is case-sensitive"
+          },
+          {
             "name": "sort",
             "in": "query",
             "type": "string",
