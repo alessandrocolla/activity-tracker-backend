@@ -16,9 +16,15 @@ exports.getAll = (Model) =>
     if (req.params._id) filter = { _id: req.params._id };
     if (req.user.role !== "admin") filter = { isActive: true };
 
-    const totalDocumentsActive = await Model.countDocuments(filter);
-    const totalDocumentsInactive = await Model.countDocuments({ ...filter, isActive: false });
-    const totalDocuments = totalDocumentsActive + totalDocumentsInactive;
+    const counters = {};
+    counters.documentsActive = await Model.countDocuments(filter);
+    counters.documentsInactive = await Model.countDocuments({ ...filter, isActive: false });
+    counters.totalDocuments = counters.documentsActive + counters.documentsInactive;
+
+    if (Model.modelName === "User") {
+      counters.usersAccepted = await Model.countDocuments({ ...filter, isAccepted: true });
+      counters.usersNotAccepted = await Model.countDocuments({ ...filter, isAccepted: false });
+    }
 
     const features = new APIFeatures(Model.find(filter), req.query, Model.modelName)
       .filter()
@@ -30,9 +36,7 @@ exports.getAll = (Model) =>
 
     res.status(200).json({
       status: "success",
-      totalDocumentsActive,
-      totalDocumentsInactive,
-      totalDocuments,
+      counters,
       results: document.length,
       data: { document },
     });
