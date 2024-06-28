@@ -105,6 +105,27 @@ exports.updateOne = (Model) =>
           document,
         },
       });
+    } else if (document.progressState) {
+      if (!req.body.isActive) {
+        await Activity.updateMany({ taskID: req.params.id }, { isTaskActive: false });
+        req.body.progressState = 100;
+        req.body.state = "Done";
+      } else if (req.body.isActive) {
+        await Activity.updateMany({ taskID: req.params.id }, { isTaskActive: true });
+        req.body.progressState = req.body.progressState || 99;
+        req.body.state = req.body.state || "In progress";
+      }
+      document = await document.updateOne(req.body, {
+        new: true,
+        runValidators: true,
+      });
+
+      res.status(200).json({
+        status: "success",
+        data: {
+          document,
+        },
+      });
     } else {
       document = await document.updateOne(req.body, {
         new: true,
