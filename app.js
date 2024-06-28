@@ -8,7 +8,7 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("./swagger.json");
+const fs = require("fs");
 
 const globalErrorHandler = require("./controllers/errorController");
 const userRouter = require("./routes/userRoutes");
@@ -18,6 +18,12 @@ const activityRouter = require("./routes/activityRoutes");
 const app = express();
 
 app.use("/public", express.static("public"));
+
+const swaggerDocument = JSON.parse(fs.readFileSync("./swagger.json", "utf8"));
+swaggerDocument.servers[0].url = swaggerDocument.servers[0].url.replace(
+  "${ACTIVITY_TRACKER_IP}",
+  process.env.ACTIVITY_TRACKER_IP,
+);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
