@@ -1800,6 +1800,14 @@
             }
           },
           {
+            "name": "isActive",
+            "in": "query",
+            "description": "Filter users by their `isActive` status.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "sort",
             "in": "query",
             "description": "Sort users",
@@ -2521,6 +2529,14 @@
             }
           },
           {
+            "name": "isTaskActive",
+            "in": "query",
+            "description": "Filter activities by their isTaskActive status.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "sort",
             "in": "query",
             "description": "Sort activities",
@@ -2756,6 +2772,9 @@
                             "_id": {
                               "$ref": "#/components/schemas/Activity/properties/_id"
                             },
+                            "isTaskActive": {
+                              "$ref": "#/components/schemas/Activity/properties/isTaskActive"
+                            },
                             "hours": {
                               "type": "number",
                               "multipleOf": 0.1,
@@ -2893,6 +2912,14 @@
             }
           },
           {
+            "name": "isTaskActive",
+            "in": "query",
+            "description": "Filter activities by their isActive status.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "sort",
             "in": "query",
             "description": "Sort activities",
@@ -2968,6 +2995,9 @@
                               },
                               "isActive": {
                                 "$ref": "#/components/schemas/Activity/properties/isActive"
+                              },
+                              "isTaskActive": {
+                                "$ref": "#/components/schemas/Activity/properties/isTaskActive"
                               },
                               "hours": {
                                 "type": "number",
@@ -3079,6 +3109,14 @@
             }
           },
           {
+            "name": "isTaskActive",
+            "in": "query",
+            "description": "Filter activities by their isActive status.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "sort",
             "in": "query",
             "description": "Sort activities",
@@ -3154,6 +3192,9 @@
                               },
                               "isActive": {
                                 "$ref": "#/components/schemas/Activity/properties/isActive"
+                              },
+                              "isTaskActive": {
+                                "$ref": "#/components/schemas/Activity/properties/isTaskActive"
                               },
                               "hours": {
                                 "type": "number",
@@ -3292,6 +3333,9 @@
                         "isActive": {
                           "$ref": "#/components/schemas/Activity/properties/isActive"
                         },
+                        "isTaskActive": {
+                          "$ref": "#/components/schemas/Activity/properties/isTaskActive"
+                        },
                         "hours": {
                           "type": "integer",
                           "example": 2
@@ -3429,6 +3473,9 @@
                   },
                   "isActive": {
                     "$ref": "#/components/schemas/Activity/properties/isActive"
+                  },
+                  "isTaskActive": {
+                    "$ref": "#/components/schemas/Activity/properties/isTaskActive"
                   }
                 }
               }
@@ -3473,6 +3520,9 @@
                         },
                         "isActive": {
                           "$ref": "#/components/schemas/Activity/properties/isActive"
+                        },
+                        "isTaskActive": {
+                          "$ref": "#/components/schemas/Activity/properties/isTaskActive"
                         },
                         "hours": {
                           "type": "integer",
@@ -3770,6 +3820,9 @@
             "type": "string"
           },
           "isActive": {
+            "type": "boolean"
+          },
+          "isTaskActive": {
             "type": "boolean"
           }
         },
