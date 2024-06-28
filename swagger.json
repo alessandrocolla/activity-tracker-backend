@@ -2305,15 +2305,6 @@
             }
           },
           {
-            "name": "startTime",
-            "in": "query",
-            "format": "date-time",
-            "description": "Filter the activity by a specific start date. The format must be yyyy-MM-ddTHH:mm:ss.SSSZ.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "startTime[gte]",
             "in": "query",
             "format": "date-time",
@@ -2323,73 +2314,10 @@
             }
           },
           {
-            "name": "startTime[gt]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Finds all activities with a start date greater than the specified one",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "startTime[lte]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Finds all activities with a start date less than or equal to the specified one",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "startTime[lt]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Finds all activities with a start date less than the specified one",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "endTime",
-            "in": "query",
-            "format": "date-time",
-            "description": "Filter the activity by the end time. The format must be yyyy-MM-ddTHH:mm:ss.SSSZ.",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "endTime[gte]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Filter the activity by the end time",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "endTime[gt]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Filter the activity by the end time",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
             "name": "endTime[lte]",
             "in": "query",
             "format": "date-time",
             "description": "Finds all activities with a finish date less than or equal to the specified date",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "endTime[lt]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Finds all activities with a finish date less than the specified date",
             "schema": {
               "type": "date"
             }
@@ -2567,15 +2495,6 @@
             }
           },
           {
-            "name": "startTime",
-            "in": "query",
-            "format": "date-time",
-            "description": "Filter the activity by a specific start date. The format must be yyyy-MM-ddTHH:mm:ss.SSSZ.",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
             "name": "startTime[gte]",
             "in": "query",
             "format": "date-time",
@@ -2585,73 +2504,10 @@
             }
           },
           {
-            "name": "startTime[gt]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Finds all activities with a start date greater than the specified one",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "startTime[lte]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Finds all activities with a start date less than or equal to the specified one",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "startTime[lt]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Finds all activities with a start date less than the specified one",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "endTime",
-            "in": "query",
-            "format": "date-time",
-            "description": "Filter the activity by the end time. The format must be yyyy-MM-ddTHH:mm:ss.SSSZ.",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "endTime[gte]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Filter the activity by the end time",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "endTime[gt]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Filter the activity by the end time",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
             "name": "endTime[lte]",
             "in": "query",
             "format": "date-time",
             "description": "Finds all activities with a finish date less than or equal to the specified date",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "endTime[lt]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Finds all activities with a finish date less than the specified date",
             "schema": {
               "type": "date"
             }
@@ -3011,15 +2867,6 @@
             }
           },
           {
-            "name": "startTime",
-            "in": "query",
-            "format": "date-time",
-            "description": "Filter the activity by a specific start date. The format must be yyyy-MM-ddTHH:mm:ss.SSSZ.",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
             "name": "startTime[gte]",
             "in": "query",
             "format": "date-time",
@@ -3029,73 +2876,10 @@
             }
           },
           {
-            "name": "startTime[gt]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Finds all activities with a start date greater than the specified one",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "startTime[lte]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Finds all activities with a start date less than or equal to the specified one",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "startTime[lt]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Finds all activities with a start date less than the specified one",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "endTime",
-            "in": "query",
-            "format": "date-time",
-            "description": "Filter the activity by the end time. The format must be yyyy-MM-ddTHH:mm:ss.SSSZ.",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "endTime[gte]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Filter the activity by the end time",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "endTime[gt]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Filter the activity by the end time",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
             "name": "endTime[lte]",
             "in": "query",
             "format": "date-time",
             "description": "Finds all activities with a finish date less than or equal to the specified date",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "endTime[lt]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Finds all activities with a finish date less than the specified date",
             "schema": {
               "type": "date"
             }
@@ -3269,15 +3053,6 @@
             }
           },
           {
-            "name": "startTime",
-            "in": "query",
-            "format": "date-time",
-            "description": "Filter the activity by a specific start date. The format must be yyyy-MM-ddTHH:mm:ss.SSSZ.",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
             "name": "startTime[gte]",
             "in": "query",
             "format": "date-time",
@@ -3287,73 +3062,10 @@
             }
           },
           {
-            "name": "startTime[gt]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Finds all activities with a start date greater than the specified one",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "startTime[lte]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Finds all activities with a start date less than or equal to the specified one",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "startTime[lt]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Finds all activities with a start date less than the specified one",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "endTime",
-            "in": "query",
-            "format": "date-time",
-            "description": "Filter the activity by the end time. The format must be yyyy-MM-ddTHH:mm:ss.SSSZ.",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "endTime[gte]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Filter the activity by the end time",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "endTime[gt]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Filter the activity by the end time",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
             "name": "endTime[lte]",
             "in": "query",
             "format": "date-time",
             "description": "Finds all activities with a finish date less than or equal to the specified date",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "endTime[lt]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Finds all activities with a finish date less than the specified date",
             "schema": {
               "type": "date"
             }
