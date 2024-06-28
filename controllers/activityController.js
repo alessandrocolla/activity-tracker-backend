@@ -48,6 +48,8 @@ exports.personalActivities = catchAsync(async (req, res, next) => {
     req.query.endTime.lte = endTime;
   }
   if (req.query.taskName) filter.taskName = req.query.taskName;
+  if (!req.query.isActive) filter.isActive = true;
+  if (req.query.isActive) filter.isActive = req.query.isActive;
 
   const totalDocuments = await Activity.countDocuments(filter);
 
