@@ -18,7 +18,7 @@ exports.getAll = (Model) =>
     if (req.params.isTaskActive) filter = { isTaskActive: true };
 
     const counters = {};
-    counters.documentsActive = await Model.countDocuments(filter);
+    counters.documentsActive = await Model.countDocuments({ ...filter, isActive: true });
     counters.documentsInactive = await Model.countDocuments({ ...filter, isActive: false });
     counters.totalDocuments = counters.documentsActive + counters.documentsInactive;
 
