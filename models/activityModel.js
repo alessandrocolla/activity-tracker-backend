@@ -37,6 +37,10 @@ const activitySchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    isTaskActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     toJSON: { virtuals: true },
