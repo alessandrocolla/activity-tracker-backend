@@ -23,7 +23,7 @@ class APIFeatures {
 
     switch (this.resource) {
       case `Activity`:
-        allowedFields = ["taskName", "isActive", "user", "startTime", "endTime"];
+        allowedFields = ["taskID", "taskName", "isActive", "user", "startTime", "endTime"];
         break;
       case `Task`:
         allowedFields = ["taskName", "isActive", "state", "progressState"];

@@ -11,6 +11,11 @@ const taskSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  expectedHours: {
+    type: Number,
+    min: [1, "Progress state must be above or equal to 1"],
+    required: [true, "Please enter a number for the expected hours"],
+  },
   state: {
     type: String,
     enum: {
