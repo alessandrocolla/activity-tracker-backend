@@ -2316,7 +2316,7 @@
             "name": "startTime[gte]",
             "in": "query",
             "format": "date-time",
-            "description": "Finds all activities with a start date greater than or equal to the specified one",
+            "description": "Finds all activities with a start date greater than or equal to the specified one. Date format: `YYYY`-`MM`-`DD`",
             "schema": {
               "type": "date"
             }
@@ -2325,7 +2325,7 @@
             "name": "endTime[lte]",
             "in": "query",
             "format": "date-time",
-            "description": "Finds all activities with a finish date less than or equal to the specified date",
+            "description": "Finds all activities with a finish date less than or equal to the specified date. Date format: `YYYY`-`MM`-`DD`",
             "schema": {
               "type": "date"
             }
@@ -2514,7 +2514,7 @@
             "name": "startTime[gte]",
             "in": "query",
             "format": "date-time",
-            "description": "Finds all activities with a start date greater than or equal to the specified one",
+            "description": "Finds all activities with a start date greater than or equal to the specified one. Date format: `YYYY`-`MM`-`DD`",
             "schema": {
               "type": "date"
             }
@@ -2523,7 +2523,7 @@
             "name": "endTime[lte]",
             "in": "query",
             "format": "date-time",
-            "description": "Finds all activities with a finish date less than or equal to the specified date",
+            "description": "Finds all activities with a finish date less than or equal to the specified date. Date format: `YYYY`-`MM`-`DD`",
             "schema": {
               "type": "date"
             }
@@ -2897,7 +2897,7 @@
             "name": "startTime[gte]",
             "in": "query",
             "format": "date-time",
-            "description": "Finds all activities with a start date greater than or equal to the specified one",
+            "description": "Finds all activities with a start date greater than or equal to the specified one. Date format: `YYYY`-`MM`-`DD`",
             "schema": {
               "type": "date"
             }
@@ -2906,7 +2906,7 @@
             "name": "endTime[lte]",
             "in": "query",
             "format": "date-time",
-            "description": "Finds all activities with a finish date less than or equal to the specified date",
+            "description": "Finds all activities with a finish date less than or equal to the specified date. Date format: `YYYY`-`MM`-`DD`",
             "schema": {
               "type": "date"
             }
