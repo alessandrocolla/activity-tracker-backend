@@ -2495,6 +2495,14 @@
         ],
         "parameters": [
           {
+            "name": "taskID",
+            "in": "query",
+            "description": "Filter the activity by the task id.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "taskName",
             "in": "query",
             "description": "Filter the activity by the task name. The search is case-sensitive.",
@@ -3063,220 +3071,6 @@
         }
       }
     },
-    "/activities/hoursPerActivity": {
-      "get": {
-        "summary": "Retrieve all user activities with durations",
-        "description": "This endpoint returns all activities of all users and is accessible only by an **admin**. A virtual field calculates the time difference between `startTime` and `endTime` for each activity.",
-        "tags": ["Activities"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "taskName",
-            "in": "query",
-            "description": "Filter the activity by the task name. The search is case-sensitive.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "startTime[gte]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Finds all activities with a start date greater than or equal to the specified one",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "endTime[lte]",
-            "in": "query",
-            "format": "date-time",
-            "description": "Finds all activities with a finish date less than or equal to the specified date",
-            "schema": {
-              "type": "date"
-            }
-          },
-          {
-            "name": "isActive",
-            "in": "query",
-            "description": "Status of the activity",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "isTaskActive",
-            "in": "query",
-            "description": "Filter activities by their isActive status.",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "sort",
-            "in": "query",
-            "description": "Sort activities",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Limits the number of activities",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "View the selected page",
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "User activities retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "success"
-                    },
-                    "totalDocuments": {
-                      "type": "integer",
-                      "example": 1
-                    },
-                    "results": {
-                      "type": "integer",
-                      "example": 1
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "activities": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "_id": {
-                                "$ref": "#/components/schemas/Activity/properties/_id"
-                              },
-                              "taskName": {
-                                "$ref": "#/components/schemas/Activity/properties/taskName"
-                              },
-                              "taskID": {
-                                "$ref": "#/components/schemas/Activity/properties/taskID"
-                              },
-                              "startTime": {
-                                "$ref": "#/components/schemas/Activity/properties/startTime"
-                              },
-                              "endTime": {
-                                "$ref": "#/components/schemas/Activity/properties/endTime"
-                              },
-                              "notes": {
-                                "$ref": "#/components/schemas/Activity/properties/notes"
-                              },
-                              "userID": {
-                                "$ref": "#/components/schemas/Activity/properties/userID"
-                              },
-                              "isActive": {
-                                "$ref": "#/components/schemas/Activity/properties/isActive"
-                              },
-                              "isTaskActive": {
-                                "$ref": "#/components/schemas/Activity/properties/isTaskActive"
-                              },
-                              "hours": {
-                                "type": "number",
-                                "multipleOf": 0.1,
-                                "example": 0.2
-                              },
-                              "id": {
-                                "$ref": "#/components/schemas/Activity/properties/_id"
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Error: Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "fail"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "You are not logged in, log in to get access"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Error: Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "fail"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Unauthorized: you do not have the permission to perform this action"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Error: Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "error"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal server error."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/activities/{id}": {
       "get": {
         "summary": "Get activity by ID",
@@ -3708,9 +3502,13 @@
             "type": "integer",
             "minimum": 0,
             "maximum": 100
+          },
+          "expectedHours": {
+            "type": "number",
+            "minimum": 1
           }
         },
-        "required": ["taskName", "progressState"]
+        "required": ["taskName", "progressState", "expectedHours"]
       },
       "User": {
         "type": "object",

@@ -16,6 +16,7 @@ exports.getAll = (Model) =>
     if (req.params._id) filter = { _id: req.params._id };
     if (req.user.role !== "admin") filter = { isActive: true };
     if (req.params.isTaskActive) filter = { isTaskActive: true };
+    if (req.query.taskID) filter.taskID = req.query.taskID;
 
     const counters = {};
     counters.documentsActive = await Model.countDocuments({ ...filter, isActive: true });
