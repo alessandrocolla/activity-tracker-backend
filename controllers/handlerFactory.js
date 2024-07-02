@@ -26,6 +26,9 @@ exports.getAll = (Model) =>
     if (Model.modelName === "User") {
       counters.usersAccepted = await Model.countDocuments({ ...filter, isAccepted: true });
       counters.usersNotAccepted = await Model.countDocuments({ ...filter, isAccepted: false });
+    } else if (Model.modelName === "Activity") {
+      counters.documentsTaskActive = await Model.countDocuments({ ...filter, isTaskActive: true });
+      counters.documentsTaskInactive = await Model.countDocuments({ ...filter, isTaskActive: false });
     }
 
     const features = new APIFeatures(Model.find(filter), req.query, Model.modelName)
