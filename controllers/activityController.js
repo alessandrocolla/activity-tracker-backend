@@ -1,4 +1,5 @@
 const Activity = require("../models/activityModel");
+const Task = require("../models/taskModel");
 const APIFeatures = require("../utils/apiFeatures");
 const catchAsync = require("../utils/catchAsync");
 const { getAll, getOne, updateOne, deleteOne } = require("./handlerFactory");
@@ -25,6 +26,10 @@ exports.createActivity = catchAsync(async (req, res, next) => {
     notes: req.body.notes,
     userID: req.body.userID,
   });
+
+  const task = await Task.findById(req.body.taskID);
+
+  if (task.state === "To do") await Task.updateOne({ _id: req.body.taskID }, { state: "In progress" });
 
   res.status(201).json({
     status: "success",
