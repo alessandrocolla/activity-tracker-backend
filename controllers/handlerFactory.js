@@ -154,6 +154,20 @@ exports.deleteOne = (Model) =>
 
     if (document.email) {
       await Activity.updateMany({ userID: req.params.id }, { isActive: false });
+    } else if (document.progressState) {
+      await Activity.updateMany({ taskID: req.params.id }, { isTaskActive: false });
+
+      await document.updateOne(
+        {
+          progressState: 100,
+          state: "Done",
+          isActive: false,
+        },
+        {
+          new: true,
+          runValidators: true,
+        },
+      );
     }
 
     res.status(204).json({
