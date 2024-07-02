@@ -13,6 +13,7 @@ exports.createTask = catchAsync(async (req, res, next) => {
     isActive: req.body.isActive,
     state: req.body.state,
     progressState: req.body.progressState,
+    expectedHours: req.body.expectedHours,
   });
 
   res.status(201).json({
