@@ -60,17 +60,22 @@
                       "type": "string",
                       "example": "success"
                     },
-                    "totalDocumentsActive": {
-                      "type": "integer",
-                      "example": 1
-                    },
-                    "totalDocumentInactive": {
-                      "type": "integer",
-                      "example": 0
-                    },
-                    "totalDocuments": {
-                      "type": "integer",
-                      "example": 1
+                    "counters": {
+                      "type": "object",
+                      "properties": {
+                        "documentsActive": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "documentInactive": {
+                          "type": "integer",
+                          "example": 0
+                        },
+                        "totalDocuments": {
+                          "type": "integer",
+                          "example": 1
+                        }
+                      }
                     },
                     "results": {
                       "type": "integer",
@@ -92,6 +97,9 @@
                               },
                               "isActive": {
                                 "$ref": "#/components/schemas/Task/properties/isActive"
+                              },
+                              "expectedHours": {
+                                "$ref": "#/components/schemas/Task/properties/expectedHours"
                               },
                               "state": {
                                 "$ref": "#/components/schemas/Task/properties/state"
@@ -172,6 +180,9 @@
                   },
                   "isActive": {
                     "$ref": "#/components/schemas/Task/properties/isActive"
+                  },
+                  "expectedHours": {
+                    "$ref": "#/components/schemas/Task/properties/expectedHours"
                   },
                   "state": {
                     "$ref": "#/components/schemas/Task/properties/state"
@@ -1840,32 +1851,81 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "_id": {
-                      "$ref": "#/components/schemas/User/properties/_id"
+                    "status": {
+                      "type": "string",
+                      "example": "success"
                     },
-                    "firstName": {
-                      "$ref": "#/components/schemas/User/properties/firstName"
+                    "counters": {
+                      "type": "object",
+                      "properties": {
+                        "documentsActive": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "documentsInactive": {
+                          "type": "integer",
+                          "example": 0
+                        },
+                        "totalDocuments": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "userAccepted": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "userNotAccepted": {
+                          "type": "integer",
+                          "example": 0
+                        }
+                      }
                     },
-                    "lastName": {
-                      "$ref": "#/components/schemas/User/properties/lastName"
+                    "results": {
+                      "type": "integer",
+                      "example": 1
                     },
-                    "email": {
-                      "$ref": "#/components/schemas/User/properties/email"
-                    },
-                    "propic": {
-                      "$ref": "#/components/schemas/User/properties/propic"
-                    },
-                    "codiceFiscale": {
-                      "$ref": "#/components/schemas/User/properties/codiceFiscale"
-                    },
-                    "isAccepted": {
-                      "$ref": "#/components/schemas/User/properties/isAccepted"
-                    },
-                    "isActive": {
-                      "$ref": "#/components/schemas/User/properties/isActive"
-                    },
-                    "creationDate": {
-                      "$ref": "#/components/schemas/User/properties/creationDate"
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "document": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "_id": {
+                                "$ref": "#/components/schemas/User/properties/_id"
+                              },
+                              "firstName": {
+                                "$ref": "#/components/schemas/User/properties/firstName"
+                              },
+                              "lastName": {
+                                "$ref": "#/components/schemas/User/properties/lastName"
+                              },
+                              "email": {
+                                "$ref": "#/components/schemas/User/properties/email"
+                              },
+                              "role": {
+                                "$ref": "#/components/schemas/User/properties/role"
+                              },
+                              "propic": {
+                                "$ref": "#/components/schemas/User/properties/propic"
+                              },
+                              "codiceFiscale": {
+                                "$ref": "#/components/schemas/User/properties/codiceFiscale"
+                              },
+                              "isAccepted": {
+                                "$ref": "#/components/schemas/User/properties/isAccepted"
+                              },
+                              "isActive": {
+                                "$ref": "#/components/schemas/User/properties/isActive"
+                              },
+                              "creationDate": {
+                                "$ref": "#/components/schemas/User/properties/creationDate"
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -2370,13 +2430,34 @@
                       "type": "string",
                       "example": "success"
                     },
-                    "totalDocuments": {
-                      "type": "integer",
-                      "example": 2
+                    "counters": {
+                      "type": "object",
+                      "properties": {
+                        "documentsActive": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "documentsInactive": {
+                          "type": "integer",
+                          "example": 0
+                        },
+                        "totalDocuments": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "documentsTaskActive": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "documentsTaskInactive": {
+                          "type": "integer",
+                          "example": 0
+                        }
+                      }
                     },
                     "results": {
                       "type": "integer",
-                      "example": 2
+                      "example": 1
                     },
                     "data": {
                       "type": "object",
@@ -2409,6 +2490,17 @@
                               },
                               "isActive": {
                                 "$ref": "#/components/schemas/Activity/properties/isActive"
+                              },
+                              "isTaskActive": {
+                                "$ref": "#/components/schemas/Activity/properties/isTaskActive"
+                              },
+                              "hours": {
+                                "type": "number",
+                                "multipleOf": 0.1,
+                                "example": 0.2
+                              },
+                              "id": {
+                                "$ref": "#/components/schemas/Activity/properties/_id"
                               }
                             }
                           }
@@ -2581,9 +2673,30 @@
                       "type": "string",
                       "example": "success"
                     },
-                    "totalDocuments": {
-                      "type": "integer",
-                      "example": 1
+                    "counters": {
+                      "type": "object",
+                      "properties": {
+                        "documentsActive": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "documentsInactive": {
+                          "type": "integer",
+                          "example": 0
+                        },
+                        "totalDocuments": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "documentsTaskActive": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "documentsTaskInactive": {
+                          "type": "integer",
+                          "example": 0
+                        }
+                      }
                     },
                     "results": {
                       "type": "integer",
@@ -2621,10 +2734,16 @@
                               "isActive": {
                                 "$ref": "#/components/schemas/Activity/properties/isActive"
                               },
+                              "isTaskActive": {
+                                "$ref": "#/components/schemas/Activity/properties/isTaskActive"
+                              },
                               "hours": {
                                 "type": "number",
                                 "multipleOf": 0.1,
                                 "example": 0.2
+                              },
+                              "id": {
+                                "$ref": "#/components/schemas/Activity/properties/_id"
                               }
                             }
                           }
@@ -2964,9 +3083,30 @@
                       "type": "string",
                       "example": "success"
                     },
-                    "totalDocuments": {
-                      "type": "integer",
-                      "example": 1
+                    "counter": {
+                      "type": "object",
+                      "properties": {
+                        "documentsActive": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "documentsInactive": {
+                          "type": "integer",
+                          "example": 0
+                        },
+                        "totalDocuments": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "documentsTaskActive": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "documentsTasksInactive": {
+                          "type": "integer",
+                          "example": 0
+                        }
+                      }
                     },
                     "results": {
                       "type": "integer",
@@ -3133,6 +3273,9 @@
                         "hours": {
                           "type": "integer",
                           "example": 2
+                        },
+                        "id": {
+                          "$ref": "#/components/schemas/Activity/properties/_id"
                         }
                       }
                     }

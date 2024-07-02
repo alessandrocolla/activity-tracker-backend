@@ -165,7 +165,12 @@ exports.getUserActivities = catchAsync(async (req, res, next) => {
 
   if (!user) return next(new AppError("User not found.", 404));
 
-  const totalDocuments = await Activity.countDocuments(filter);
+  const counters = {};
+  counters.documentsActive = await Activity.countDocuments({ ...filter, isActive: true });
+  counters.documentsInactive = await Activity.countDocuments({ ...filter, isActive: false });
+  counters.totalDocuments = counters.documentsActive + counters.documentsInactive;
+  counters.documentsTaskActive = await Activity.countDocuments({ ...filter, isTaskActive: true });
+  counters.documentsTaskInactive = await Activity.countDocuments({ ...filter, isTaskActive: false });
 
   const features = new APIFeatures(Activity.find(filter), req.query, "Activity")
     .filter()
@@ -176,7 +181,7 @@ exports.getUserActivities = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    totalDocuments,
+    counters,
     results: activities.length,
     data: {
       activities,
