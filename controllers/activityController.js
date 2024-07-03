@@ -63,6 +63,23 @@ exports.personalActivities = catchAsync(async (req, res, next) => {
   counters.documentsTaskActive = await Activity.countDocuments({ ...filter, isTaskActive: true });
   counters.documentsTaskInactive = await Activity.countDocuments({ ...filter, isTaskActive: false });
 
+  let active = {};
+  if (req.query.isActive && req.query.isTaskActive) {
+    active["isActive"] = req.query.isActive;
+    active["isTaskActive"] = req.query.isTaskActive;
+  } else if (req.query.isActive) {
+    active["isActive"] = req.query.isActive;
+  } else if (req.query.isTaskActive) {
+    active["isTaskActive"] = req.query.isTaskActive;
+  } else {
+    active;
+  }
+
+  counters.totalResultQueriesActive = await Activity.countDocuments({
+    ...filter,
+    ...active,
+  });
+
   const features = new APIFeatures(Activity.find(filter), req.query, "Activity")
     .filter()
     .sort()
