@@ -18,6 +18,18 @@ exports.getAll = (Model) =>
     if (req.params.isTaskActive) filter = { isTaskActive: true };
     if (req.query.taskID) filter.taskID = req.query.taskID;
 
+    let active = {};
+    if (req.query.isActive && req.query.isTaskActive) {
+      active["isActive"] = req.query.isActive;
+      active["isTaskActive"] = req.query.isTaskActive;
+    } else if (req.query.isActive) {
+      active["isActive"] = req.query.isActive;
+    } else if (req.query.isTaskActive) {
+      active["isTaskActive"] = req.query.isTaskActive;
+    } else {
+      active;
+    }
+
     const counters = {};
     counters.documentsActive = await Model.countDocuments({ ...filter, isActive: true });
     counters.documentsInactive = await Model.countDocuments({ ...filter, isActive: false });
@@ -29,6 +41,10 @@ exports.getAll = (Model) =>
     } else if (Model.modelName === "Activity") {
       counters.documentsTaskActive = await Model.countDocuments({ ...filter, isTaskActive: true });
       counters.documentsTaskInactive = await Model.countDocuments({ ...filter, isTaskActive: false });
+      counters.totalResultQueriesActive = await Model.countDocuments({
+        ...filter,
+        ...active,
+      });
     }
 
     const features = new APIFeatures(Model.find(filter), req.query, Model.modelName)
