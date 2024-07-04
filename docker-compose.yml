@@ -1,0 +1,16 @@
+version: '3'
+services:
+  activity-tracker-backend:
+    container_name: activity-tracker-backend
+    image: activity-tracker-backend:jenkins
+    ports:
+      - "3000:3000"
+    volumes:
+      - "/home/admubuntu/jenkins-data/activitytrackerbe/config.env:/app/config.env"
+        #    build:
+        #  context: activity-tracker-backend
+    networks:
+      - net
+
+networks:
+  net:
