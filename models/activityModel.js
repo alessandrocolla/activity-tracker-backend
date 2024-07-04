@@ -64,23 +64,17 @@ activitySchema.pre("save", async function () {
 
   const existingActivities = await Activity.find({
     userID,
-    startTime,
+    $and: [{ startTime: { $lt: endTime } }, { endTime: { $gt: startTime } }],
   });
 
-  const overlappingActivities = existingActivities.find((activity) => {
-    return (
-      (startTime >= activity.startTime && startTime < activity.endTime) ||
-      (endTime > activity.startTime && endTime <= activity.endTime) ||
-      (startTime <= activity.startTime && endTime >= activity.endTime)
-    );
-  });
-
-  if (overlappingActivities) {
+  if (existingActivities.length > 0) {
     throw new AppError(
       "The time you entered intersects with the time of another activity you have already created.",
       403,
     );
   }
+
+  next();
 });
 
 activitySchema.pre("save", function (next) {
