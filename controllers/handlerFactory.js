@@ -7,8 +7,6 @@ const User = require("../models/userModel");
 exports.getAll = (Model) =>
   catchAsync(async (req, res, next) => {
     let filter = {};
-    if (req.params.startTime) filter = { startTime: req.params.startTime };
-    if (req.params.endTime) filter = { endTime: req.params.endTime };
     if (req.params.taskName) filter = { task: req.params.taskName };
     if (req.params.firstName) filter = { firstName: req.params.firstName };
     if (req.params.lastName) filter = { lastName: req.params.lastName };
@@ -17,6 +15,17 @@ exports.getAll = (Model) =>
     if (req.user.role !== "admin") filter = { isActive: true };
     if (req.params.isTaskActive) filter = { isTaskActive: true };
     if (req.query.taskID) filter.taskID = req.query.taskID;
+
+    if (req.query.startTime) {
+      filter.startTime = { $gte: new Date(req.query.startTime.gte) };
+    }
+    if (req.query.endTime) {
+      const endTime = new Date(req.query.endTime.lte);
+      endTime.setHours(23, 59, 59, 999);
+      if (!filter.startTime) filter.startTime = {};
+      filter.endTime = { $lte: endTime };
+      req.query.endTime.lte = endTime;
+    }
 
     let active = {};
     if (req.query.isActive && req.query.isTaskActive) {

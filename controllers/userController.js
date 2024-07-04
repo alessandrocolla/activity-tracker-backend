@@ -158,6 +158,17 @@ exports.getUserActivities = catchAsync(async (req, res, next) => {
   if (req.params.isActive) filter = { isActive: req.params.isActive };
   const filter = { userID: req.params.userID };
 
+  if (req.query.startTime) {
+    filter.startTime = { $gte: new Date(req.query.startTime.gte) };
+  }
+  if (req.query.endTime) {
+    const endTime = new Date(req.query.endTime.lte);
+    endTime.setHours(23, 59, 59, 999);
+    if (!filter.startTime) filter.startTime = {};
+    filter.endTime = { $lte: endTime };
+    req.query.endTime.lte = endTime;
+  }
+
   const user = await User.findById(req.params.userID);
 
   if (!user) return next(new AppError("User not found.", 404));
