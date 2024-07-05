@@ -3416,7 +3416,7 @@
           "description": "Fields to update for the activity",
           "required": true,
           "content": {
-            "multipart/form-data": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -3514,8 +3514,11 @@
                       "example": "fail"
                     },
                     "message": {
-                      "type": "string",
-                      "example": "Unauthorized: you do not have the permission to perform this action"
+                      "type": "array",
+                      "example": [
+                        "Unauthorized: you do not have the permission to perform this action",
+                        "Cannot make changes of an activity with the startDate of a different month."
+                      ]
                     }
                   }
                 }

@@ -156,6 +156,26 @@ exports.updateOne = (Model) =>
           document,
         },
       });
+    } else if (document.startTime) {
+      const currentYear = new Date().getFullYear().toString();
+      const currentMonth = new Date().getMonth().toString();
+      const documentYear = document.startTime.getFullYear().toString();
+      const documentMonth = document.startTime.getMonth().toString();
+
+      if ((documentYear !== currentYear || documentMonth !== currentMonth) && req.user.role !== "admin")
+        next(new AppError("Cannot make changes of an activity with the startDate of a different month.", 403));
+
+      document = await document.updateOne(req.body, {
+        new: true,
+        runValidators: true,
+      });
+
+      res.status(200).json({
+        status: "success",
+        data: {
+          document,
+        },
+      });
     } else {
       document = await document.updateOne(req.body, {
         new: true,
