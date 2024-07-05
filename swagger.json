@@ -256,7 +256,9 @@
                         "Task validation failed: state: State is either: 'To do', 'In progress', 'Done'",
                         "Task validation failed: progressState: Progress state must be above or equal to 0",
                         "Task validation failed: progressState: Progress state must be below or equal to 100",
-                        "Task validation failed: progressState: Please enter a number for the progress status"
+                        "Task validation failed: progressState: Please enter a number for the progress status",
+                        "Invalid input data. Expected hours must be above or equal to 1",
+                        "Invalid input data. Please enter a number for the expected hours"
                       ]
                     }
                   }
