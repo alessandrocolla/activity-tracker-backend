@@ -57,7 +57,7 @@ activitySchema.virtual("hours").get(function () {
   return hours.toFixed(2);
 });
 
-activitySchema.pre("save", async function () {
+activitySchema.pre("save", async function (next) {
   const userID = this.userID;
   const startTime = this.startTime;
   const endTime = this.endTime;
@@ -67,11 +67,15 @@ activitySchema.pre("save", async function () {
     $and: [{ startTime: { $lt: endTime } }, { endTime: { $gt: startTime } }],
   });
 
-  if (existingActivities.length > 0) {
-    throw new AppError(
-      "The time you entered intersects with the time of another activity you have already created.",
-      403,
-    );
+  if(existingActivities.length > 0){
+    existingActivities.forEach(activity => {
+      if (activity.isActive === true) {
+        throw new AppError(
+          "The time you entered intersects with the time of another activity you have already created.",
+          403,
+        );
+      }
+    });
   }
 
   next();
