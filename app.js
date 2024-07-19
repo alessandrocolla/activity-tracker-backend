@@ -9,6 +9,7 @@ const hpp = require("hpp");
 const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const fs = require("fs");
+const logger = require("./logger");
 
 const globalErrorHandler = require("./controllers/errorController");
 const userRouter = require("./routes/userRoutes");
@@ -16,6 +17,14 @@ const taskRouter = require("./routes/taskRoutes");
 const activityRouter = require("./routes/activityRoutes");
 
 const app = express();
+
+const morganMidlleware = morgan(":method :url :status :res[content-length] - :response-time ms", {
+  stream: {
+    write: (message) => logger.http(message.trim()),
+  },
+});
+
+app.use(morganMidlleware);
 
 app.use("/public", express.static("public"));
 
