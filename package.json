@@ -34,6 +34,7 @@
     "swagger-ui-express": "^5.0.1",
     "validate-date": "^2.1.0",
     "validator": "^13.12.0",
+    "winston": "^3.13.1",
     "xss-clean": "^0.1.4"
   },
   "devDependencies": {
