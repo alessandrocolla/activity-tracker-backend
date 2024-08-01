@@ -4,7 +4,7 @@ const AppError = require("../utils/appError");
 
 const verifyCaptcha = (req, res) => {
   const token = req.body["g-recaptcha-response"];
-  const secretKey = "6LeBbRsqAAAAAF6y0tHCVBM3n_UP3r2_v1QueIen";
+  const secretKey = process.env.G_SECRET_KEY;
 
   const postData = querystring.stringify({
     secret: secretKey,
