@@ -15,6 +15,7 @@ const globalErrorHandler = require("./controllers/errorController");
 const userRouter = require("./routes/userRoutes");
 const taskRouter = require("./routes/taskRoutes");
 const activityRouter = require("./routes/activityRoutes");
+const captchaRouter = require("./routes/captchaRoutes");
 
 const app = express();
 
@@ -89,6 +90,7 @@ app.use(
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/tasks", taskRouter);
 app.use("/api/v1/activities", activityRouter);
+app.use("/api/v1/captcha", captchaRouter);
 
 app.use(globalErrorHandler);
 
