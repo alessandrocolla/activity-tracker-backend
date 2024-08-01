@@ -30,6 +30,12 @@ const verifyCaptcha = (req, res) => {
 
     response.on("end", () => {
       const result = JSON.parse(data);
+      if(result.success) {
+        let response = {
+          success: true
+        }
+        res.status(200).send(JSON.stringify(response))
+      }
       if (!result.success) {
         return (new AppError("Internal server error.", 500));
       }
