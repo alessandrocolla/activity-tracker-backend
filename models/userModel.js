@@ -2,6 +2,8 @@ const crypto = require("crypto");
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
+const iban = require("iban");
+const AppError = require("../utils/appError");
 
 const firstLastNameRegex =
   /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
@@ -86,6 +88,59 @@ const userSchema = new mongoose.Schema({
     },
     trim: true,
   },
+  birthDate: {
+    type: Date,
+    required: [true, "You must put a date of birth"],
+  },
+  birthPlace: {
+    type: String,
+    required: [true, "You must put a birthplace"],
+    trim: true,
+  },
+  residence: {
+    type: String,
+    required: [true, "You must put your residence"],
+    trim: true,
+  },
+  position: {
+    type: String,
+    enum: [
+      "1° livello",
+      "2° livello",
+      "3° livello",
+      "4° livello",
+      "5° livello",
+      "6° livello",
+      "7° livello",
+      "8° livello",
+      "9° livello",
+    ],
+    default: "1° livello",
+    trim: true,
+  },
+  iban: {
+    type: String,
+    required: [true, "You must an IBAN code"],
+    unique: true,
+    minlength: 27,
+    maxlength: 27,
+    select: false,
+    validate: {
+      validator: function (el) {
+        return iban.isValid(el);
+      },
+      message: (props) => `${props.value} is not a valid IBAN code!`,
+    },
+  },
+  qualification: {
+    type: String,
+    required: [true, "You must provide a qualification"],
+    trim: true,
+  },
+  hireDate: {
+    type: Date,
+    default: Date.now(),
+  },
   isAccepted: {
     type: Boolean,
     default: false,
@@ -101,6 +156,42 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.index({ codiceFiscale: 1 }, { unique: true });
+
+userSchema.pre("validate", function (next) {
+  const validSkills = {
+    "1° livello": ["Lavoratori generici", "Operai comuni"],
+    "2° livello": ["Operai qualificati", "Addetti alle macchine utensili semplici"],
+    "3° Livello": ["Operai specializzati", "Addetti a macchine utensili complesse"],
+    "4° Livello": [
+      "Operai specializzati di alta qualificazione",
+      "Manutentori",
+      "Addetti a linee di produzione automatizzate",
+    ],
+    "5° Livello": [" Tecnici operativi", "Capi squadra", "Addetti alla programmazione di macchine CNC"],
+    "6° Livello": ["Tecnici esperti", "Capi reparto", "Programmatori CNC avanzati"],
+    "7° Livello": ["Quadri tecnici", "Responsabili di area", "Supervisori di produzione"],
+    "8° Livello": ["Dirigenti tecnici", "Responsabili di settore", "Ingegneri di processo"],
+    "9° Livello": ["Dirigenti di alto livello", "Direttori tecnici", " Project manager senior"],
+  };
+
+  const selectedPosition = this.position;
+  const userQualifications = this.qualification;
+
+  if (validSkills[selectedPosition]) {
+    const allowedQualifications = validSkills[selectedPosition];
+
+    if (!allowedQualifications.includes(userQualifications)) {
+      return next(
+        new AppError(
+          `The qualification ${userQualifications} is not valid for the ${selectedPosition}. Qualifications allowed: ${allowedQualifications.join(", ")}`,
+          400,
+        ),
+      );
+    }
+  }
+
+  next();
+});
 
 userSchema.pre("validate", function (next) {
   if ((this.isNew && !this.password) || !this.passwordConfirm) {

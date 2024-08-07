@@ -50,6 +50,13 @@ exports.signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
     codiceFiscale: req.body.codiceFiscale,
+    birthDate: req.body.birthDate,
+    birthPlace: req.body.birthPlace,
+    residence: req.body.residence,
+    position: req.body.position,
+    iban: req.body.iban,
+    qualification: req.body.qualification,
+    hireDate: req.body.hireDate,
   });
 
   responseHandler(
