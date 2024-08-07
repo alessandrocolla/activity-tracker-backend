@@ -1414,6 +1414,27 @@
                             "codiceFiscale": {
                               "$ref": "#/components/schemas/User/properties/codiceFiscale"
                             },
+                            "birthDate": {
+                              "$ref": "#/components/schemas/User/properties/birthDate"
+                            },
+                            "birthPlace": {
+                              "$ref": "#/components/schemas/User/properties/birthPlace"
+                            },
+                            "residence": {
+                              "$ref": "#/components/schemas/User/properties/residence"
+                            },
+                            "position": {
+                              "$ref": "#/components/schemas/User/properties/position"
+                            },
+                            "iban": {
+                              "$ref": "#/components/schemas/User/properties/iban"
+                            },
+                            "qualification": {
+                              "$ref": "#/components/schemas/User/properties/qualification"
+                            },
+                            "hireDate": {
+                              "$ref": "#/components/schemas/User/properties/hireDate"
+                            },
                             "isAccepted": {
                               "$ref": "#/components/schemas/User/properties/isAccepted"
                             },
