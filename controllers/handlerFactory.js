@@ -115,6 +115,13 @@ exports.updateOne = (Model) =>
           lastName: req.body.lastName,
           propic: req.body.propic,
           codiceFiscale: req.body.codiceFiscale,
+          birthDate: req.body.birthDate,
+          birthPlace: req.body.birthPlace,
+          residence: req.body.residence,
+          position: req.body.position,
+          iban: req.body.iban,
+          qualification: req.body.qualification,
+          hireDate: req.body.hireDate,
         },
       });
     } else if (document.userID && req.body.isActive === true) {
