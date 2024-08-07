@@ -779,7 +779,12 @@
                         "Invalid input data. RSSMRA85MAAHAAAA is not a valid codiceFiscale (tax code)!",
                         "Invalid input data. You must put a firstName",
                         "Invalid input data. You must put a lastName",
-                        "Invalid input data. You must put an email"
+                        "Invalid input data. You must put an email",
+                        "Invalid input data. You must put a date of birth",
+                        "Invalid input data. You must put a birthplace",
+                        "Invalid input data. You must put your residence",
+                        "Invalid input data. IT99X0000000000000000000000 is not a valid IBAN code!",
+                        "Invalid input data. You must provide a qualification"
                       ]
                     }
                   }
@@ -2061,6 +2066,27 @@
                         },
                         "codiceFiscale": {
                           "$ref": "#/components/schemas/User/properties/codiceFiscale"
+                        },
+                        "birthDate": {
+                          "$ref": "#/components/schemas/User/properties/birthDate"
+                        },
+                        "birthPlace": {
+                          "$ref": "#/components/schemas/User/properties/birthPlace"
+                        },
+                        "residence": {
+                          "$ref": "#/components/schemas/User/properties/residence"
+                        },
+                        "position": {
+                          "$ref": "#/components/schemas/User/properties/position"
+                        },
+                        "iban": {
+                          "$ref": "#/components/schemas/User/properties/iban"
+                        },
+                        "qualification": {
+                          "$ref": "#/components/schemas/User/properties/qualification"
+                        },
+                        "hireDate": {
+                          "$ref": "#/components/schemas/User/properties/hireDate"
                         }
                       }
                     }
@@ -2186,6 +2212,27 @@
                   },
                   "codiceFiscale": {
                     "$ref": "#/components/schemas/User/properties/codiceFiscale"
+                  },
+                  "birthDate": {
+                    "$ref": "#/components/schemas/User/properties/birthDate"
+                  },
+                  "birthPlace": {
+                    "$ref": "#/components/schemas/User/properties/birthPlace"
+                  },
+                  "residence": {
+                    "$ref": "#/components/schemas/User/properties/residence"
+                  },
+                  "position": {
+                    "$ref": "#/components/schemas/User/properties/position"
+                  },
+                  "iban": {
+                    "$ref": "#/components/schemas/User/properties/iban"
+                  },
+                  "qualification": {
+                    "$ref": "#/components/schemas/User/properties/qualification"
+                  },
+                  "hireDate": {
+                    "$ref": "#/components/schemas/User/properties/hireDate"
                   }
                 }
               }
@@ -3769,6 +3816,49 @@
             "example": "RSSMRA85M01H501Z",
             "unique": true
           },
+          "birthDate": {
+            "type": "date",
+            "example": "2024-01-31"
+          },
+          "birthPlace": {
+            "type": "string",
+            "example": "Roma"
+          },
+          "residence": {
+            "type": "string",
+            "example": "Via Libertà 17"
+          },
+          "position": {
+            "type": "string",
+            "enum": [
+              "1° livello",
+              "2° livello",
+              "3° livello",
+              "4° livello",
+              "5° livello",
+              "6° livello",
+              "7° livello",
+              "8° livello",
+              "9° livello"
+            ],
+            "default": "1° livello",
+            "example": "1° livello"
+          },
+          "iban": {
+            "type": "string",
+            "minlength": 27,
+            "maxlength": 27,
+            "example": "IT60X0542811101000000123456",
+            "unique": true
+          },
+          "qualification": {
+            "type": "string",
+            "example": "Operai comuni"
+          },
+          "hireDate": {
+            "type": "string",
+            "format": "date-time"
+          },
           "isAccepted": {
             "type": "boolean",
             "default": false
@@ -3782,7 +3872,18 @@
             "format": "date-time"
           }
         },
-        "required": ["firstName", "lastName", "email", "codiceFiscale"]
+        "required": [
+          "firstName",
+          "lastName",
+          "email",
+          "codiceFiscale",
+          "birthDate",
+          "birthPlace",
+          "residence",
+          "position",
+          "iban",
+          "qualification"
+        ]
       },
       "Activity": {
         "type": "object",
