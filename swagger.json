@@ -1570,6 +1570,30 @@
                     },
                     "codiceFiscale": {
                       "$ref": "#/components/schemas/User/properties/codiceFiscale"
+                    },
+                    "birthDate": {
+                      "$ref": "#/components/schemas/User/properties/birthDate"
+                    },
+                    "birthPlace": {
+                      "$ref": "#/components/schemas/User/properties/birthPlace"
+                    },
+                    "residence": {
+                      "$ref": "#/components/schemas/User/properties/residence"
+                    },
+                    "position": {
+                      "$ref": "#/components/schemas/User/properties/position"
+                    },
+                    "iban": {
+                      "$ref": "#/components/schemas/User/properties/iban"
+                    },
+                    "qualification": {
+                      "$ref": "#/components/schemas/User/properties/qualification"
+                    },
+                    "hireDate": {
+                      "$ref": "#/components/schemas/User/properties/hireDate"
+                    },
+                    "creationDate": {
+                      "$ref": "#/components/schemas/User/properties/creationDate"
                     }
                   }
                 }
@@ -1649,6 +1673,18 @@
                   },
                   "codiceFiscale": {
                     "$ref": "#/components/schemas/User/properties/codiceFiscale"
+                  },
+                  "residence": {
+                    "$ref": "#/components/schemas/User/properties/residence"
+                  },
+                  "position": {
+                    "$ref": "#/components/schemas/User/properties/position"
+                  },
+                  "iban": {
+                    "$ref": "#/components/schemas/User/properties/iban"
+                  },
+                  "qualification": {
+                    "$ref": "#/components/schemas/User/properties/qualification"
                   }
                 }
               }
@@ -1709,6 +1745,31 @@
                             },
                             "passwordChangedAt": {
                               "$ref": "#/components/schemas/User/properties/passwordChangedAt"
+                            },
+                            "birthDate": {
+                              "$ref": "#/components/schemas/User/properties/birthDate"
+                            },
+                            "birthPlace": {
+                              "$ref": "#/components/schemas/User/properties/birthPlace"
+                            },
+                            "residence": {
+                              "$ref": "#/components/schemas/User/properties/residence"
+                            },
+                            "position": {
+                              "$ref": "#/components/schemas/User/properties/position"
+                            },
+                            "iban": {
+                              "$ref": "#/components/schemas/User/properties/iban"
+                            },
+                            "qualification": {
+                              "$ref": "#/components/schemas/User/properties/qualification"
+                            },
+                            "hireDate": {
+                              "$ref": "#/components/schemas/User/properties/hireDate"
+                            },
+
+                            "isActive": {
+                              "$ref": "#/components/schemas/User/properties/isActive"
                             }
                           }
                         }
@@ -1949,6 +2010,27 @@
                               },
                               "creationDate": {
                                 "$ref": "#/components/schemas/User/properties/creationDate"
+                              },
+                              "birthDate": {
+                                "$ref": "#/components/schemas/User/properties/birthDate"
+                              },
+                              "birthPlace": {
+                                "$ref": "#/components/schemas/User/properties/birthPlace"
+                              },
+                              "residence": {
+                                "$ref": "#/components/schemas/User/properties/residence"
+                              },
+                              "position": {
+                                "$ref": "#/components/schemas/User/properties/position"
+                              },
+                              "iban": {
+                                "$ref": "#/components/schemas/User/properties/iban"
+                              },
+                              "qualification": {
+                                "$ref": "#/components/schemas/User/properties/qualification"
+                              },
+                              "hireDate": {
+                                "$ref": "#/components/schemas/User/properties/hireDate"
                               }
                             }
                           }
