@@ -29,7 +29,22 @@ class APIFeatures {
         allowedFields = ["taskName", "isActive", "state", "progressState"];
         break;
       case `User`:
-        allowedFields = ["firstName", "lastName", "role", "isAccepted", "isActive", "creationDate"];
+        allowedFields = [
+          "firstName",
+          "lastName",
+          "role",
+          "isAccepted",
+          "isActive",
+          "creationDate",
+          "codiceFiscale",
+          "email",
+          "birthDate",
+          "birthPlace",
+          "residence",
+          "position",
+          "qualification",
+          "hireDate",
+        ];
         break;
       default:
         throw new AppError("Develop Error: `resource` not passed correctly, please enter a `Model.modelName`", 400);

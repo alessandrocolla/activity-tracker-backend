@@ -86,6 +86,13 @@ exports.getOne = (Model) =>
           propic: `${req.protocol}://${req.hostname}:${process.env.PORT}/public/img/users/${document.propic}`,
           codiceFiscale: document.codiceFiscale,
           email: document.email,
+          birthDate: document.birthDate,
+          birthPlace: document.birthPlace,
+          residence: document.residence,
+          position: document.position,
+          iban: document.iban,
+          qualification: document.qualification,
+          hireDate: document.hireDate,
         },
       });
     }
