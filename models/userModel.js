@@ -89,7 +89,7 @@ const userSchema = new mongoose.Schema({
     trim: true,
   },
   birthDate: {
-    type: Date,
+    type: String,
     required: [true, "You must put a date of birth"],
   },
   birthPlace: {
@@ -138,7 +138,7 @@ const userSchema = new mongoose.Schema({
     trim: true,
   },
   hireDate: {
-    type: Date,
+    type: String,
     default: Date.now(),
   },
   isAccepted: {
